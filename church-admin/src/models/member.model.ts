@@ -1,8 +1,9 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {Gender, MaritalStatus} from "../types";
+import {MEMBERS_TABLE} from "../configs/constants.ts";
 
 
-@Entity()
+@Entity(MEMBERS_TABLE)
 export class Member {
 
     @PrimaryGeneratedColumn('uuid')
@@ -106,7 +107,7 @@ export class Member {
     @Column({
         nullable: true
     })
-    otherUnits?: string;
+    otherUnit?: string;
 
 
     //TODO should be array

@@ -8,19 +8,27 @@ export class Attendance {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column()
+    @Column({
+        name: 'user_id'
+    })
     user!: string;
 
     @Column({
-        enum: UserType
+        enum: UserType,
+        name: 'user_type'
     })
     userType!: UserType;
 
 
-    @Column()
+    @Column({
+        name: 'time_in'
+    })
     timeIn!: Date;
 
-    @Column()
+    @Column({
+        nullable: true,
+        name: 'time_out'
+    })
     timeOut?: Date;
 
     @Column({
