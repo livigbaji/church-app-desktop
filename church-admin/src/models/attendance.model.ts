@@ -36,6 +36,17 @@ export class Attendance {
     })
     status!: AttendanceStatus;
 
+    @Column({
+        nullable: true,
+    })
+    deleted?: boolean;
+
+    @Column({
+        name: 'deleted_at',
+        nullable: true,
+    })
+    deletedAt?: Date;
+
     @CreateDateColumn()
     createdAt!: Date;
 

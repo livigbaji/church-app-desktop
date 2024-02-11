@@ -26,13 +26,26 @@ export class ExternalMembers {
     lastName!: string;
 
 
-    @Column()
-    unit!: string;
+    @Column({
+        nullable: true,
+    })
+    unit?: string;
 
     @Column({
         enum: ExternalMemberLabel
     })
     label!: ExternalMemberLabel;
+
+    @Column({
+        nullable: true,
+    })
+    deleted?: boolean;
+
+    @Column({
+        name: 'deleted_at',
+        nullable: true,
+    })
+    deletedAt?: Date;
 
     @CreateDateColumn()
     createdAt!: Date;
