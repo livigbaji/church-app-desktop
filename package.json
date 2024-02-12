@@ -8,9 +8,9 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "migration:create": "typeorm migration:create",
-    "migration:run": "typeorm-ts-node-esm migration:run -d src/datasource.ts",
-    "migration:revert": "typeorm-ts-node-esm migration:revert -d src/datasource.ts",
-    "migration:generate": "typeorm-ts-node-esm migration:generate src/migrations -d src/datasource.ts"
+    "migration:run": "typeorm-ts-node-esm migration:run -d src/main/datasource.ts",
+    "migration:revert": "typeorm-ts-node-esm migration:revert -d src/main/datasource.ts",
+    "migration:generate": "typeorm-ts-node-esm migration:generate src/main/migrations -d src/main/datasource.ts"
   },
   "dependencies": {
     "react": "^18.2.0",
