@@ -13,6 +13,7 @@
     "migration:generate": "typeorm-ts-node-esm migration:generate src/main/migrations -d src/main/datasource.ts"
   },
   "dependencies": {
+    "@electron/remote": "^2.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reflect-metadata": "^0.2.1",

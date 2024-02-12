@@ -4,6 +4,7 @@ declare global {
     namespace NodeJS {
         interface Global {
             database: Database;
+            ipcRenderer: import('electron').IpcRenderer;
         }
     }
 }

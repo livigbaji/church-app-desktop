@@ -1,7 +1,6 @@
-import { app, BrowserWindow } from 'electron'
 import 'reflect-metadata'; // Required by TypoORM.
+import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
-import Database from '../src/main/database'
 
 // The built directory structure
 //
@@ -28,7 +27,7 @@ function createWindow() {
     },
   })
 
-  global.database = new Database();
+
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
