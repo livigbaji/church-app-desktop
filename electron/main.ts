@@ -1,3 +1,4 @@
+import 'reflect-metadata'; // Required by TypoORM.
 import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
 
@@ -25,6 +26,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
     },
   })
+
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
