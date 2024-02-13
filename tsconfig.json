@@ -18,7 +18,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": ["src", "electron"],
   "references": [{ "path": "./tsconfig.node.json" }]

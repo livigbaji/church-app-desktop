@@ -7,10 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+church-admin/node_modules
+church-admin/dist
 dist
 dist-ssr
 dist-electron
+church-admin/dist-electron
+church-admin/dist-ssr
 release
 *.local
 
@@ -24,3 +27,5 @@ release
 *.njsproj
 *.sln
 *.sw?
+node_modules
+.vite
