@@ -7,7 +7,7 @@ on:
     branches-ignore:
       - main
     paths-ignore:
-      - 'readme.md'
+      - '**/readme.md'
 
 jobs:
   # This workflow contains a single job called "build".
