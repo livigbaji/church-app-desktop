@@ -1,17 +1,24 @@
 import {DataSource} from "typeorm";
-import {AttendanceService} from "./services/attendance.service.ts";
-import {Attendance} from "./models/attendance.model.ts";
-import {AppDataSource} from "./datasource.ts";
+import {AttendanceService} from "./services/attendance.service";
+import {MemberService} from "./services/member.service";
+import {Attendance} from "./models/attendance.model";
+import {AppDataSource} from "./datasource";
+import {Member} from "./models/member.model";
 
-
-export default class Database {
+let db: Database
+export class Database {
     public attendance: AttendanceService;
+    public members: MemberService;
     private connection: DataSource = AppDataSource;
 
     constructor() {
         void this.init();
         this.attendance = new AttendanceService(
             this.connection.getRepository(Attendance)
+        );
+
+        this.members = new MemberService(
+            this.connection.getRepository(Member)
         );
     }
 
@@ -20,4 +27,12 @@ export default class Database {
             this.connection = await AppDataSource.initialize();
         }
     }
+}
+
+export const initDB = () => {
+    if(!db) {
+        db = new Database()
+    }
+
+    return db;
 }
