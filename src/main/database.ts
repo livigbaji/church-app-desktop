@@ -4,6 +4,7 @@ import {MemberService} from "./services/member.service";
 import {Attendance} from "./models/attendance.model";
 import {AppDataSource} from "./datasource";
 import {Member} from "./models/member.model";
+import {ExternalMembers} from "./models/external-members.model.ts";
 
 let db: Database
 export class Database {
@@ -18,7 +19,8 @@ export class Database {
         );
 
         this.members = new MemberService(
-            this.connection.getRepository(Member)
+            this.connection.getRepository(Member),
+            this.connection.getRepository(ExternalMembers),
         );
     }
 
