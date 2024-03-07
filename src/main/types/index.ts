@@ -38,3 +38,24 @@ export enum Gender {
     MALE = 'MALE',
     FEMALE = 'FEMALE'
 }
+
+export type ListMembersRequest = {
+    search: string,
+    limit: number,
+    offset: number,
+    isExternal: boolean,
+}
+
+export type ListAttendanceRequest = {
+    isExternal: boolean,
+    date: Date,
+    limit: number,
+    offset: number,
+}
+
+export type signInRequest = {
+    user: string,
+    isExternal: boolean,
+    timeIn: Date,
+    status: AttendanceStatus
+}

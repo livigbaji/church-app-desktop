@@ -1,7 +1,16 @@
 import { contextBridge, ipcRenderer } from 'electron'
-
+import {initDB} from "../src/main/database.ts";
+initDB()
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', withPrototype(ipcRenderer))
+contextBridge.exposeInMainWorld('stuff', {
+  // Invoke Methods
+  testInvoke: (args: unknown) => ipcRenderer.invoke('test-invoke', args),
+  // Send Methods
+  testSend: (args: unknown) => ipcRenderer.send('test-send', args),
+  // Receive Methods
+  testReceive: (callback: (arg: any) => void) => ipcRenderer.on('test-receive', (_event, data) => { callback(data) })
+})
 
 // `exposeInMainWorld` can't detect attributes and methods of `prototype`, manually patching it.
 function withPrototype(obj: Record<string, any>) {

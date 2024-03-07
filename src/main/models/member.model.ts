@@ -1,5 +1,5 @@
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {Gender, MaritalStatus} from "../types";
+import {Gender, MaritalStatus, MemberStatus} from "../types";
 import {MEMBERS_TABLE} from "../configs/constants.ts";
 
 
@@ -142,6 +142,17 @@ export class Member {
     @Column()
     state!: string;
 
+    @Column({
+        default: MemberStatus.ACTIVE,
+        enum: MemberStatus
+    })
+    status!: MemberStatus;
+
+    @Column()
+    suspensionDescription?: string;
+
+    @Column()
+    suspendedAt?: Date | null;
 
     @Column({
         default: false,
