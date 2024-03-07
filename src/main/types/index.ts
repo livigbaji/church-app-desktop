@@ -38,3 +38,10 @@ export enum Gender {
     MALE = 'MALE',
     FEMALE = 'FEMALE'
 }
+
+export  type ListMembersRequest = {
+    search: string,
+    limit: number,
+    offset: number,
+    isExternal: boolean,
+}
