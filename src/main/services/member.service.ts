@@ -24,11 +24,13 @@ export class MemberService {
 
     listMembers(request: ListMembersRequest) {
         const query = {
-            where: [
+           ...(request.search && {where: [
                 { firstName: Like(`%${request.search}%`) },
                 { middleName: Like(`%${request.search}%`) },
                 { lastName: Like(`%${request.search}%`) }
-            ]
+            ]}),
+            skip: request.offset || 0,
+            take: request.limit || 500
         } as FindManyOptions<Member|ExternalMembers>
 
         const model = request.isExternal ? this.externalMemberRepo : this.memberRepo;
@@ -84,7 +86,8 @@ export class MemberService {
     birthdays(month: number) {
         return this.memberRepo.find({
             where: {
-                birthMonth: month
+                birthMonth: month,
+                status:  MemberStatus.ACTIVE,
             }
         });
     }
