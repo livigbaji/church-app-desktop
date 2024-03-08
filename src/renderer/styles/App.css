@@ -1,0 +1,8 @@
+body {
+    --blue: #132034;
+    --background-color: #F5F5F5;
+}
+
+.app {
+    display: flex;
+}

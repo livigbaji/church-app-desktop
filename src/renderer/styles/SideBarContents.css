@@ -1,0 +1,46 @@
+.sidebar-contents {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 20px;
+}
+
+/* --- SideBar hover effect --- */
+.sidebar-contents:hover {
+    color: #ffffff;
+    background-color: #FFFFFF26;
+    border-radius: 10px;
+    padding: 20px;
+    transition: 400ms ease-out;
+}
+
+/* --- SideBar active effect --- */
+.sidebar-contents-active {
+    color: #ffffff;
+    background-color: #FFFFFF26;
+    border-radius: 10px;
+    padding: 20px;
+    transition: 400ms ease-out;
+}
+
+.sidebar-contents p {
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-left: 15px;
+
+}
+
+/* --- Logout Button --- */
+.sidebar-contents:last-child {
+    font-weight: 700;
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}

@@ -1,15 +1,10 @@
-:root {
+body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* line-height: 1.5; */
+  font-size: 16px;
   font-weight: 400;
-  
-  font-size: 20px;
-  font-weight: 700;
   line-height: 24px;
   letter-spacing: 0em;
-  text-align: left;
-
-
-  background-color: #F5F5F5;
-
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }

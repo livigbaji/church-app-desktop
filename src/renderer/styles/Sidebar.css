@@ -1,39 +1,68 @@
 .sidebar {
-  background-color: #132034; /* Background color */
-  color: white; /* Text color */
-  height: calc(100vh - 70px); /* Set height to 100% of viewport height minus 70px (for example) */
-  width: 269px; /* Set the width to your desired value */
-  position: fixed; /* Fix the sidebar position */
-  top: 70px; /* Set the top position to leave space for a fixed top navigation bar (adjust as needed) */
+  background-color: #132034;
+  /* Background color */
+  color: white;
+  /* Text color */
+  height: 100%;
+  /* Set height to 100% of viewport height */
+  width: 269px;
+  /* Set the width to your desired value */
+  position: absolute;
+  /* Fix the sidebar position */
+  top: 0;
+  left: 0;
+  z-index: 1;
   font-size: 16px;
   font-weight: 400;
   line-height: 19px;
   letter-spacing: 0em;
   text-align: left;
+  overflow-y: auto;
+  /* Add scrollbar when content exceeds sidebar height */
+}
 
+.sidebar-sticky {
+  padding-top: 20px;
+  /* Add padding to create space at the top */
+  height: 100%;
+  /* Make the sticky content fill the sidebar */
 }
 
 .sidebar-link {
-  color: white; /* Text color for links */
-  padding: 10px 20px; /* Add padding to create space around the links */
-  display: block; /* Make the links block-level elements */
+  color: white;
+  /* Text color for links */
+  padding: 15px 20px;
+  /* Add padding to create space around the links */
+  display: block;
+  /* Make the links block-level elements */
 }
 
-.sidebar-link:hover {
-  color: #F5F5F5; /* Text color on hover */
+.sidebar-icon:active {
+  color: green;
+  /* Text color on hover */
 }
 
 .sidebar-icon {
-  color: white; /* Icon color */
-  margin-right: 10px; /* Add margin to separate the icon from the text */
+  color: white;
+  /* Icon color */
+  margin-right: 15px;
+  /* Add more margin to separate the icon from the text */
+  margin-bottom: 5px;
+  /* Bring the icons lower */
 }
 
 .sidebar-text {
-  margin-left: 10px; /* Add spacing between icon and text */
+  margin-left: 15px;
+  /* Add more spacing between icon and text */
+  margin-bottom: 5px;
+  /* Bring the text lower */
 }
 
 .logout-link {
-  position: absolute; /* Position the logout link at the bottom of the sidebar */
-  bottom: 20px; /* Adjust the bottom position as needed */
-  left: 20px; /* Adjust the left position as needed */
+  position: absolute;
+  /* Position the logout link at the bottom of the sidebar */
+  bottom: 20px;
+  /* Adjust the bottom position as needed */
+  left: 20px;
+  /* Adjust the left position as needed */
 }

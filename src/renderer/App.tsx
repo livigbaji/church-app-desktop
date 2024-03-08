@@ -1,12 +1,20 @@
-import NavbarComponent from "./components/NavbarComponent"
-import SideBar from "./components/SideBar"
-function App() {
+import Sidebar from "./components/SideBar";
+import Header from "./components/Header";
+import Dashboard from "./components/Dashboard";
+import "./styles/App.css";
+
+
+const App:React.FC = () => {
   return (
-    <div>
-      <NavbarComponent/>
-      <SideBar/>
-    </div>
-  )
+    <>
+      {/* Sidebar component */}
+     <Sidebar />
+     {/* Header component */}
+     <Header />
+     {/* Dashboard component */}
+     <Dashboard />
+    </>
+  );
 }
 
-export default App
+export default App;
