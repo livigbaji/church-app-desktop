@@ -2,8 +2,6 @@ import React from 'react';
 import { BsFillGridFill, BsClipboardData, BsPeople, BsBuilding, BsPersonFill, BsBoxArrowRight } from 'react-icons/bs';
 import SideBarContents from './SideBarContents';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/sidebar.css'; // Import custom CSS for the sidebar
-
 interface SidebarProps {}
 
 const Sidebar: React.FC<SidebarProps> = () => {
