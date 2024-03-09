@@ -21,7 +21,7 @@ export class Database {
     async  init() {
 
         const knexInstance = knex({
-            client: 'sqlite3',
+            client: 'better-sqlite3',
             useNullAsDefault: true,
             connection: {
                 filename: "./dev.sqlite3",
