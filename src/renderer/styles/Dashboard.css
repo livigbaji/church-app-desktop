@@ -1,0 +1,13 @@
+.dashboard {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.dashboard-header {
+    position: sticky;
+    top: 0;
+    background-color: lightblue;
+    z-index: 100;
+    border: 1px solid green;
+    padding: 15px 20px;
+}

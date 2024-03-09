@@ -1,0 +1,6 @@
+.app {
+    --blue: #132034;
+    --background-color: #F5F5F5;
+    display: flex;
+    height: 100vh;
+}
