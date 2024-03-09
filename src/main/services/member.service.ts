@@ -1,73 +1,70 @@
-import {FindManyOptions, Like, Repository} from "typeorm";
 import {ipcMain} from "@electron/remote";
 import {Member} from "../models/member.model.ts";
 import {ExternalMembers} from "../models/external-members.model.ts";
 import {ListMembersRequest, MemberStatus} from "../types";
 
 export class MemberService {
-    constructor(
-        private readonly memberRepo: Repository<Member>,
-        private readonly externalMemberRepo: Repository<ExternalMembers>
-    ) {
+    constructor() {
         this.init()
     }
 
     init() {
         ipcMain.handle('get:members',  () => {
-            return this.memberRepo.find()
+            return [] // this.listMembers();
         });
 
         ipcMain.handle('get:external-members',  () => {
-            return this.externalMemberRepo.find()
+            return [] // this.listExternalMembers();
         });
     }
 
     listMembers(request: ListMembersRequest) {
-        const query = {
-           ...(request.search && {where: [
-                { firstName: Like(`%${request.search}%`) },
-                { middleName: Like(`%${request.search}%`) },
-                { lastName: Like(`%${request.search}%`) }
-            ]}),
-            skip: request.offset || 0,
-            take: request.limit || 500
-        } as FindManyOptions<Member|ExternalMembers>
+        return  Member.query()
+            .whereILike('firstName', `%${request.search}%`)
+            .orWhereILike('middleName', `%${request.search}%`)
+            .orWhereILike('lastName', `%${request.search}%`)
+            .orderBy('firstName')
+            .limit(request.limit || 500)
+            .offset(request.offset || 0)
 
-        const model = request.isExternal ? this.externalMemberRepo : this.memberRepo;
+    }
 
-        return model.find(query)
+    listExternalMembers(request: ListMembersRequest) {
+        return  ExternalMembers.query()
+            .whereILike('firstName', `%${request.search}%`)
+            .orWhereILike('middleName', `%${request.search}%`)
+            .orWhereILike('lastName', `%${request.search}%`)
+            .orderBy('firstName')
+            .limit(request.limit || 500)
+            .offset(request.offset || 0)
     }
 
     createMember(member: Partial<Member>) {
-        return this.memberRepo.save(this.memberRepo.create(member));
+        return Member.query().insert(member);
     }
 
     updateMember(id: string, member: Partial<Member>) {
-        return this.memberRepo.update({
-            id,
-        }, member)
+        return Member.query().findById(id).patch(member)
     }
 
     createExternalMember(member: Partial<ExternalMembers>) {
-        return this.externalMemberRepo.save(this.externalMemberRepo.create(member));
+        return ExternalMembers.query().insert(member);
     }
 
     updateExternalMember(id: string, member: Partial<ExternalMembers>) {
-        return this.externalMemberRepo.update({
-            id,
-        }, member)
+        return ExternalMembers.query().findById(id).patch(member)
     }
 
-    deleteMember(id: string, isExternal: boolean) {
-        const model = isExternal ? this.externalMemberRepo : this.memberRepo;
+    deleteMember(id: string) {
+        return Member.query().deleteById( id );
+    }
 
-        return model.delete({ id });
+    deleteExternalMember(id: string) {
+        return ExternalMembers.query().deleteById( id );
     }
 
     suspendMember(id: string, note: string) {
-        return this.memberRepo.update({
-            id,
-        }, {
+        return Member.query().findById(id).patchAndFetch({
             status: MemberStatus.SUSPENDED,
             suspensionDescription: note,
             suspendedAt: new Date(),
@@ -75,20 +72,17 @@ export class MemberService {
     }
 
     unsuspend(id: string) {
-        return this.memberRepo.update({
-            id,
-        }, {
+        return Member.query().findById(id).patchAndFetch({
             status:  MemberStatus.ACTIVE,
             suspendedAt: null,
         });
     }
 
     birthdays(month: number) {
-        return this.memberRepo.find({
-            where: {
+        return Member.query().where({
                 birthMonth: month,
                 status:  MemberStatus.ACTIVE,
-            }
-        });
+        })
+            .orderBy('birthDate');
     }
 }

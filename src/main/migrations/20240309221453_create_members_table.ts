@@ -3,7 +3,7 @@ import {MEMBERS_TABLE} from '../configs/constants.ts';
 
 export async function up(knex: Knex): Promise<void> {
     knex.schema.createTable(MEMBERS_TABLE, (table) => {
-        table.uuid('id', { primaryKey: true });
+        table.uuid('id', { primaryKey: true }).defaultTo(knex.fn.uuid());
         table.string('first_name');
         table.string('middle_name').nullable();
         table.string('last_name');
