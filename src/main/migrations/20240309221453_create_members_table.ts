@@ -32,7 +32,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('home_town');
         table.string('lga');
         table.string('state');
-        table.boolean('deleted');
+        table.boolean('deleted').defaultTo(false);
         table.timestamp('deleted_at').nullable();
         table.timestamps();
     })
