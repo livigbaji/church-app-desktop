@@ -7,7 +7,7 @@
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "migration:create": "knex migrate:make migration_name -x ts",
+    "migration:create": "knex migrate:make -x ts",
     "migration:run": "typeorm-ts-node-esm migration:run -d src/main/datasource.ts",
     "migration:revert": "typeorm-ts-node-esm migration:revert -d src/main/datasource.ts",
     "migration:generate": "typeorm-ts-node-esm migration:generate src/main/migrations -d src/main/datasource.ts"
