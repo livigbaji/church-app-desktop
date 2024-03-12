@@ -1,9 +1,11 @@
 import "../styles/Dashboard.css"
+import Header from "./Header";
+
 
 const Dashbaord: React.FC = () => {
   return(
-    <div className="dashboard">
-      <h1 className="dashboard-header" >Dashboard Component</h1>
+    <div className="container">
+      <Header pageTitle="Dashboard" />
       <p>Content will go here</p>
     </div>
   )

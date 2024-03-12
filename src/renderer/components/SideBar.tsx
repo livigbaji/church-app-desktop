@@ -7,15 +7,16 @@ interface SidebarProps {}
 const Sidebar: React.FC<SidebarProps> = () => {
   return (
     <div className="sidebar">
+
       {/* <--- SideBar Icons and Text ---> */}
-      <SideBarContents active Icon={BsFillGridFill} text="Dashboard" />
-      <SideBarContents Icon={BsClipboardData} text="Attendance" />
-      <SideBarContents Icon={BsPeople} text="Users" />
-      <SideBarContents Icon={BsBuilding} text="Sub-Units" />
-      <SideBarContents Icon={BsPersonFill} text="Profiles" />
+      <SideBarContents to="/" Icon={BsFillGridFill} text="Dashboard" />
+      <SideBarContents to="/attendance" Icon={BsClipboardData} text="Attendance" />
+      <SideBarContents to="/users" Icon={BsPeople} text="Users" />
+      <SideBarContents to="/subunits" Icon={BsBuilding} text="Sub-Units" />
+      <SideBarContents to="/profiles" Icon={BsPersonFill} text="Profiles" />
 
       {/* <--- Logout Button ---> */}
-      <SideBarContents Icon={BsBoxArrowRight} text="Log-out" />
+      <SideBarContents to="/logout" Icon={BsBoxArrowRight} text="Log-out" />
     </div>
   );
 };
