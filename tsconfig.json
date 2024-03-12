@@ -23,6 +23,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "include": ["src", "electron"],
+  "include": ["src", "electron",
+    "knexfile.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
