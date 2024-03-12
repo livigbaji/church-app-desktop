@@ -42,5 +42,11 @@ export class AdminService {
         return member;
     }
 
+    suspendAdmin(user: string) {
+        return Admin.query().where({
+            user,
+        }).delete()
+    }
+
 
 }
