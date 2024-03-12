@@ -42,6 +42,29 @@ export class AdminService {
         return member;
     }
 
+    async makeAdmin(user: string) {
+        const member = await Member.query().where({
+            id: user
+        }).first();
+
+        if(!member) {
+            return Promise.reject('member does not exist');
+        }
+
+        const admin = await Admin.query().where({
+            user: member.id
+        }).first();
+
+        if(admin) {
+            return Promise.reject('user is already an admin');
+        }
+
+        return Admin.query().insert({
+            user,
+            pin: '0000',
+        })
+    }
+
     suspendAdmin(user: string) {
         return Admin.query().where({
             user,
