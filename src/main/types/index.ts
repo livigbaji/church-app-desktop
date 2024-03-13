@@ -60,3 +60,15 @@ export type signInRequest = {
     timeIn: Date,
     status: AttendanceStatus
 }
+
+export type CreateUnit = {
+    leader?: string;
+    name: string;
+    description: string;
+}
+
+export type CreateUnitPosition = {
+    group: string;
+    name: string;
+    description: string;
+}

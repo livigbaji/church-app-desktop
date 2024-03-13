@@ -5,7 +5,7 @@ import {UNIT_TABLE} from "../configs/constants.ts";
 export async function up(knex: Knex): Promise<void> {
     knex.schema.createTable(UNIT_TABLE, (table) => {
         table.uuid('id', {primaryKey: true}).defaultTo(knex.fn.uuid());
-        table.uuid('leader');
+        table.uuid('leader').nullable();
         table.string('name');
         table.text('description');
         table.boolean('deleted').defaultTo(false);
