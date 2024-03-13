@@ -56,6 +56,7 @@ export type ListAttendanceRequest = {
 export type signInRequest = {
     user: string,
     isExternal: boolean,
+    position: string,
     timeIn: Date,
     status: AttendanceStatus
 }

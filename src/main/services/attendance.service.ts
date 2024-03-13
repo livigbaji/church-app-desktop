@@ -30,6 +30,7 @@ export class AttendanceService {
         return Attendance.query().insert({
             userType: request.isExternal ? UserType.EXTERNAL : UserType.MEMBER,
             user: request.user,
+            position: request.position,
             timeIn: request.timeIn,
             status: request.status
         });
@@ -39,6 +40,15 @@ export class AttendanceService {
         return Attendance.query().patchAndFetchById(id, {
             timeOut: new Date()
         });
+    }
+
+    async forceSignOut(requestDate: Date) {
+        const date = requestDate || new Date();
+        await Attendance.query().patch({
+            timeOut: new Date()
+        }).whereBetween('timeIn', [startOfDay(date), endOfDay(date)])
+
+        return true;
     }
 
     attendanceStats(date: Date, isExternal: boolean) {
