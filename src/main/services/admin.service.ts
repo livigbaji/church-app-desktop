@@ -102,5 +102,9 @@ export class AdminService {
         }).delete()
     }
 
+    async listAdmins() {
+        return Admin.query();
+    }
+
 
 }

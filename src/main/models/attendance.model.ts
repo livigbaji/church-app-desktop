@@ -16,6 +16,7 @@ export class Attendance extends Model {
     id!: string;
     user!: string;
     userType!: UserType;
+    position?: string;
     timeIn!: Date;
     timeOut?: Date;
     status!: AttendanceStatus;
