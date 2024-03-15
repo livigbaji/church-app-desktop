@@ -55,7 +55,8 @@ export class UnitService {
         }).where({ id, })
     }
 
-    deleteUnit(id: string) {
+    async deleteUnit(id: string) {
+        await UnitPosition.query().where({ unit: id }).delete();
         return Unit.query().deleteById(id);
     }
 
