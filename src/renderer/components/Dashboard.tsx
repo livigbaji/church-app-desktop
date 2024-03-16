@@ -1,8 +1,8 @@
 import React from "react";
 import "../styles/Dashboard.css";
 import Header from "./Header";
-import PieChart from "./charts/PieChart";
-import LineChart from "./charts/LineChart";
+// import PieChart from "./charts/PieChart";
+// import LineChart from "./charts/LineChart";
 import { BsPeople, BsCollection, BsXCircle, BsCalendar } from "react-icons/bs";
 
 const fakeDashboardData = [
