@@ -11,9 +11,9 @@ const Sidebar: React.FC<SidebarProps> = () => {
       {/* <--- SideBar Icons and Text ---> */}
       <SideBarContents to="/" Icon={BsFillGridFill} text="Dashboard" />
       <SideBarContents to="/attendance" Icon={BsClipboardData} text="Attendance" />
-      <SideBarContents to="/users" Icon={BsPeople} text="Users" />
+      <SideBarContents to="/users" Icon={BsPeople} text="Members" />
       <SideBarContents to="/subunits" Icon={BsBuilding} text="Sub-Units" />
-      <SideBarContents to="/profiles" Icon={BsPersonFill} text="Profiles" />
+      <SideBarContents to="/profiles" Icon={BsPersonFill} text="Admin" />
 
       {/* <--- Logout Button ---> */}
       <SideBarContents to="/logout" Icon={BsBoxArrowRight} text="Log-out" />
