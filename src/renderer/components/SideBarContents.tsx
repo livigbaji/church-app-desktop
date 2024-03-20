@@ -1,18 +1,21 @@
 import React from 'react';
 import '../styles/SideBarContents.css';
+import { Link } from 'react-router-dom';
+
 
 interface SideBarContentsProps {
   text: string;
   Icon: React.ElementType;
-  active?: boolean
+  active?: boolean;
+  to: string
 }
 
-const SideBarContents: React.FC<SideBarContentsProps> = ({ active, text, Icon }) => {
+const SideBarContents: React.FC<SideBarContentsProps> = ({ active, text, Icon, to }) => {
   return (
-    <div className={`sidebar-contents ${active && 'sidebar-contents-active'}`}>
+    <Link to={to} className={`sidebar-contents ${active && 'sidebar-contents-active'}`}>
       <Icon />
       <p>{text}</p>
-    </div>
+    </Link>
   );
 };
 
