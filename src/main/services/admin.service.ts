@@ -2,6 +2,7 @@ import {ipcMain} from "@electron/remote";
 import {Member} from "../models/member.model.ts";
 import {Admin} from "../models/admin.model.ts";
 import { createHash } from 'crypto';
+import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 
 export class AdminService {
     constructor() {
@@ -13,8 +14,24 @@ export class AdminService {
     }
 
     init() {
-        ipcMain.handle('login', async () => {
-            return [] // this.login()
+        ipcMain.handle('login', async (_event: IpcMainInvokeEvent, phone: string, pin: string) => {
+            return this.login(phone, pin);
+        });
+
+        ipcMain.handle('makeAdmin', async (_event: IpcMainInvokeEvent, user: string) => {
+            return this.makeAdmin(user);
+        });
+
+        ipcMain.handle('changePin', async (_event: IpcMainInvokeEvent, user: string, oldPin: string, newPin: string) => {
+            return this.changePin(user, oldPin, newPin);
+        });
+
+        ipcMain.handle('suspendAdmin', async (_event: IpcMainInvokeEvent, user: string) => {
+            return this.suspendAdmin(user);
+        });
+
+        ipcMain.handle('listAdmins', async (_event: IpcMainInvokeEvent) => {
+            return this.listAdmins();
         });
     }
 
@@ -102,7 +119,7 @@ export class AdminService {
         }).delete()
     }
 
-    async listAdmins() {
+     listAdmins() {
         return Admin.query();
     }
 
