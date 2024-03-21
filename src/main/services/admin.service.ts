@@ -30,7 +30,7 @@ export class AdminService {
             return this.suspendAdmin(user);
         });
 
-        ipcMain.handle('listAdmins', async (_event: IpcMainInvokeEvent) => {
+        ipcMain.handle('listAdmins', async () => {
             return this.listAdmins();
         });
     }
