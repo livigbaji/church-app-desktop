@@ -2,6 +2,7 @@ import {Attendance} from "../models/attendance.model.ts";
 import {ipcMain} from "@electron/remote";
 import {endOfDay, startOfDay} from "date-fns";
 import {ListAttendanceRequest, signInRequest, UserType} from "../types";
+import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 
 
 export class AttendanceService {
@@ -10,8 +11,24 @@ export class AttendanceService {
     }
 
     init() {
-        ipcMain.handle('get-attendance', async () => {
-            return [] // this.attendanceRepo.find()
+        ipcMain.handle('get:attendance', async (_event: IpcMainInvokeEvent, request: ListAttendanceRequest) => {
+            return this.listAttendance(request);
+        });
+
+        ipcMain.handle('signIn', async (_event: IpcMainInvokeEvent, request: signInRequest) => {
+            return this.signIn(request);
+        });
+
+        ipcMain.handle('signOut', async (_event: IpcMainInvokeEvent, id: string) => {
+            return this.signOut(id);
+        });
+
+        ipcMain.handle('forceSignOut', async (_event: IpcMainInvokeEvent, requestDate: Date) => {
+            return this.forceSignOut(requestDate);
+        });
+
+        ipcMain.handle('attendanceStats', async (_event: IpcMainInvokeEvent, date: Date, isExternal: boolean) => {
+            return this.attendanceStats(date, isExternal);
         });
     }
 
