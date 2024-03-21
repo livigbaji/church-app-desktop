@@ -16,16 +16,7 @@
     cursor: pointer;
     padding: 20px;
     color: #ffffff;
-}
-
-
-/* --- SideBar hover effect --- */
-.sidebar-contents:hover {
-    color: #ffffff;
-    background-color: #FFFFFF26;
-    border-radius: 10px;
-    padding: 20px;
-    transition: 400ms ease-out;
+    text-decoration: none;
 }
 
 /* --- SideBar active effect --- */
@@ -36,6 +27,16 @@
     padding: 20px;
     transition: 400ms ease-out;
 }
+
+/* --- SideBar hover effect --- */
+.sidebar-contents:hover {
+    color: #ffffff;
+    background-color: #FFFFFF26;
+    border-radius: 10px;
+    padding: 20px;
+    transition: 400ms ease-out;
+}
+
 
 .sidebar-contents p {
     font-size: 15px;
