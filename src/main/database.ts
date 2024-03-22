@@ -22,6 +22,11 @@ export class Database {
         this.members = new MemberService();
         this.admin = new AdminService();
         this.unit = new UnitService();
+
+        this.members.init();
+        this.admin.init();
+        this.unit.init();
+        this.attendance.init();
     }
 
     async  init() {
