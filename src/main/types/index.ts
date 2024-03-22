@@ -56,6 +56,19 @@ export type ListAttendanceRequest = {
 export type signInRequest = {
     user: string,
     isExternal: boolean,
+    position: string,
     timeIn: Date,
     status: AttendanceStatus
+}
+
+export type CreateUnit = {
+    leader?: string;
+    name: string;
+    description: string;
+}
+
+export type CreateUnitPosition = {
+    group: string;
+    name: string;
+    description: string;
 }

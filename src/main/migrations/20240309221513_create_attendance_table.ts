@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
         table.uuid('id', {primaryKey: true}).defaultTo(knex.fn.uuid());
         table.uuid('user_id');
         table.string('user_type');
+        table.uuid('duty_post').nullable();
         table.timestamp('time_in');
         table.timestamp('time_out').nullable();
         table.string('status');

@@ -5,17 +5,23 @@ import {Member} from "./models/member.model";
 import {ExternalMembers} from "./models/external-members.model.ts";
 import {initialize} from "objection";
 import knex from 'knex';
+import {AdminService} from "./services/admin.service.ts";
+import {UnitService} from './services/unit.service.ts';
 
 
 let db: Database
 export class Database {
     public attendance: AttendanceService;
     public members: MemberService;
+    public admin: AdminService;
+    public unit: UnitService;
 
     constructor() {
         void this.init();
         this.attendance = new AttendanceService();
         this.members = new MemberService();
+        this.admin = new AdminService();
+        this.unit = new UnitService();
     }
 
     async  init() {
