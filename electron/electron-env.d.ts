@@ -24,5 +24,6 @@ declare namespace NodeJS {
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
   database: Database;
-  ipcRenderer: import('electron').IpcRenderer
+  ipcRenderer: import('electron').IpcRenderer,
+  churchAPI: import('./../src/main/services/admin.service').AdminAPI
 }

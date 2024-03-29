@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Dashboard.css";
 import Header from "./Header";
-// import PieChart from "./charts/PieChart";
-// import LineChart from "./charts/LineChart";
 import { BsPeople, BsCollection, BsXCircle, BsCalendar } from "react-icons/bs";
+import { ipcRenderer } from "electron";
 
 const fakeDashboardData = [
   {
@@ -33,6 +32,20 @@ const fakeDashboardData = [
 ];
 
 const Dashboard: React.FC = () => {
+  useEffect(() => {
+    handleChurchApi();
+  }, []);
+
+  const handleChurchApi = async () => {
+    try {
+      console.log(window.churchAPI)
+      const response = await window.churchAPI.invoke("listAdmins");
+      console.log("Church API call invoked", response);
+    } catch (error) {
+      console.error("Error fetching church data:", error);
+    }
+  };
+
   return (
     <div className="container">
       <Header pageTitle="Dashboard" />
@@ -55,6 +68,7 @@ const Dashboard: React.FC = () => {
       </div>
       {/* <PieChart/>
       <LineChart/> */}
+      <button onClick={handleChurchApi} >TEST</button>
     </div>
   );
 };

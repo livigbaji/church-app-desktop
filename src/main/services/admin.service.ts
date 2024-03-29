@@ -1,8 +1,9 @@
-import {ipcMain} from "@electron/remote";
-import {Member} from "../models/member.model.ts";
-import {Admin} from "../models/admin.model.ts";
+import { ipcMain } from "@electron/remote";
+import { Member } from "../models/member.model.ts";
+import { Admin } from "../models/admin.model.ts";
 import { createHash } from 'crypto';
 import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
+import { ipcRenderer } from "electron";
 
 export class AdminService {
     constructor() {
@@ -40,7 +41,7 @@ export class AdminService {
             phoneNumber: phone
         }).first();
 
-        if(!member) {
+        if (!member) {
             return Promise.reject('incorrect phone number');
         }
 
@@ -48,11 +49,11 @@ export class AdminService {
             user: member.id
         }).first();
 
-        if(!admin) {
+        if (!admin) {
             return Promise.reject('incorrect phone number');
         }
 
-        if(this.hash(pin) != admin.pin) {
+        if (this.hash(pin) != admin.pin) {
             return Promise.reject('incorrect pin');
         }
 
@@ -64,7 +65,7 @@ export class AdminService {
             id: user
         }).first();
 
-        if(!member) {
+        if (!member) {
             return Promise.reject('member does not exist');
         }
 
@@ -72,7 +73,7 @@ export class AdminService {
             user: member.id
         }).first();
 
-        if(admin) {
+        if (admin) {
             return Promise.reject('user is already an admin');
         }
 
@@ -87,7 +88,7 @@ export class AdminService {
             id: user
         }).first();
 
-        if(!member) {
+        if (!member) {
             return Promise.reject('member does not exist');
         }
 
@@ -95,11 +96,11 @@ export class AdminService {
             user: member.id
         }).first();
 
-        if(!admin) {
+        if (!admin) {
             return Promise.reject('admin profile does not exist');
         }
 
-        if(this.hash(oldPin) != admin.pin) {
+        if (this.hash(oldPin) != admin.pin) {
             return Promise.reject('incorrect pin');
         }
 
@@ -119,9 +120,17 @@ export class AdminService {
         }).delete()
     }
 
-     listAdmins() {
+    listAdmins() {
         return Admin.query();
     }
 
 
+}
+
+export const AdminAPI = {
+    login: (phone: string, pin: string) => ipcRenderer.invoke('login', phone, pin),
+    makeAdmin: (user: string) => ipcRenderer.invoke('makeAdmin', user),
+    changePin: (user: string, oldPin: string, newPin: string) => ipcRenderer.invoke('changePin', user, oldPin, newPin),
+    suspendAdmin: (user: string) => ipcRenderer.invoke('suspendAdmin', user),
+    listAdmins: () => ipcRenderer.invoke('listAdmins'),
 }
