@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "../styles/Dashboard.css";
 import Header from "./Header";
 import { BsPeople, BsCollection, BsXCircle, BsCalendar } from "react-icons/bs";
-import { ipcRenderer } from "electron";
 
 const fakeDashboardData = [
   {
