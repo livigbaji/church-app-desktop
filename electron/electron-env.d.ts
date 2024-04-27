@@ -25,5 +25,8 @@ declare namespace NodeJS {
 interface Window {
   database: Database;
   ipcRenderer: import('electron').IpcRenderer,
-  churchAPI: import('./../src/main/services/admin.service').AdminAPI
+  churchAPI: import('./../src/main/services/admin.service').AdminAPI,
+  stuffAPI: {
+    hello: (word: string) => void
+  }
 }

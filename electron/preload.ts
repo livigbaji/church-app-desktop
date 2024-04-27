@@ -1,11 +1,19 @@
-import { AdminAPI } from './../src/main/services/admin.service';
+// import { AdminService } from './../src/main/services/admin.service';
 import { contextBridge } from 'electron'
-import { initDB } from "../src/main/database.ts";
-initDB()
-contextBridge.exposeInMainWorld('churchAPI', {
-  // Invoke Methods
-  ...AdminAPI
+contextBridge.exposeInMainWorld('stuffAPI', {
+  hello: (word: string) => {
+    return {
+      word,
+      service: 'backend'
+    };
+  },
+  // database: db,
+  // adminSerivce: AdminService
 })
+// contextBridge.exposeInMainWorld('churchAPI', {
+//   // Invoke Methods
+//   ...AdminAPI
+// })
 
 
 // --------- Preload scripts loading ---------

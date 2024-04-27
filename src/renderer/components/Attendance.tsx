@@ -1,6 +1,16 @@
 import Header from "./Header";
+// const { ipcRenderer } = window.require('electron');
+
 
 const Attendance : React.FC = () => {
+
+  const getData = () => {
+   const stuff = window.stuffAPI.hello("World");
+   console.log(stuff);
+  }
+
+
+
     return(
       <div className="container">
         <Header pageTitle="Attendance" />
@@ -38,6 +48,7 @@ const Attendance : React.FC = () => {
           </div>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
+        <button onClick={getData}>GET DATA</button>
       </form>
       </div>
     )

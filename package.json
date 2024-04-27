@@ -2,6 +2,7 @@
   "name": "church-admin",
   "private": true,
   "version": "0.0.0",
+  "description": "Church desktop application",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",

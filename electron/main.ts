@@ -1,6 +1,7 @@
 import 'reflect-metadata'; // Required by TypoORM.
 import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
+import { initDB } from "../src/main/database.ts";
 
 // The built directory structure
 //
@@ -56,6 +57,9 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
+    try { initDB() } catch (e) {
+      // stuff
+    }
     createWindow()
   }
 })
