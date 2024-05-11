@@ -32,7 +32,7 @@ export const runMigration = async (migrations: DBMigration[]) => {
         return;
     }
 
-    const doneMigrations = database.prepare<{}, {name: string; runOrder: number}>(`SELECT name, runOrder FROM migrations ORDER BY createdAt DESC`).all();
+    const doneMigrations = database.prepare(`SELECT name, runOrder FROM migrations ORDER BY createdAt DESC`).all() as Array<{name: string; runOrder: number}>;
 
     console.log(doneMigrations);
     const configMigration = migrations.map((mig) => {
