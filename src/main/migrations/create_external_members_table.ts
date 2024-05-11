@@ -1,7 +1,7 @@
 import { EXTERNALS_TABLE } from "../configs/constants.ts";
 
-export default class ExternalsTable {
-    static name: string = "20240309221501";
+export default class CreateExternalsTable {
+    static name: string = "20240309221501_create_external_members_table";
 
     static up(): string {
         return `

@@ -23,10 +23,12 @@ declare namespace NodeJS {
 
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
-  database: Database;
   ipcRenderer: import('electron').IpcRenderer,
   churchAPI: import('./../src/main/services/admin.service').AdminAPI,
   stuffAPI: {
-    hello: (word: string) => void
+    hello: (word: string) => void,
+    database: {
+      doStuff: (name: string, password: string) => Promise<Record<string, string>>,
+    },
   }
 }

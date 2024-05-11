@@ -2,45 +2,49 @@ import {ipcMain} from "@electron/remote";
 import {Unit, UnitPosition} from "../models/unit.model.ts";
 import {CreateUnit, CreateUnitPosition} from "../types";
 import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
+import {Database} from "better-sqlite3";
 
 export class UnitService {
-    constructor() {
-        this.init()
-    }
+    private readonly db: Database;
 
-    init() {
-        ipcMain.handle('get:units',  () => {
-            return this.listUnits();
-        });
+    constructor(
+        private readonly db: Database
+    ) {}
 
-        ipcMain.handle('get:unitPositions',  (_event: IpcMainInvokeEvent, unit: string) => {
-            return this.listUnitPosition(unit);
-        });
-
-        ipcMain.handle('create:unit',  (_event: IpcMainInvokeEvent, request: CreateUnit) => {
-            return this.createUnit(request);
-        });
-
-        ipcMain.handle('create:unitPosition',  (_event: IpcMainInvokeEvent, request: CreateUnitPosition) => {
-            return this.createUnitPosition(request);
-        });
-
-        ipcMain.handle('update:unit',  (_event: IpcMainInvokeEvent, id: string, request: CreateUnit) => {
-            return this.updateUnit(id, request);
-        });
-
-        ipcMain.handle('update:unitPosition',  (_event: IpcMainInvokeEvent, id: string, request: CreateUnitPosition) => {
-            return this.updateUnitPosition(id, request);
-        });
-
-        ipcMain.handle('delete:unit',  (_event: IpcMainInvokeEvent, id: string) => {
-            return this.deleteUnit(id);
-        });
-
-        ipcMain.handle('delete:unit',  (_event: IpcMainInvokeEvent, id: string) => {
-            return this.deleteUnitPosition(id);
-        });
-    }
+    //
+    // init() {
+    //     ipcMain.handle('get:units',  () => {
+    //         return this.listUnits();
+    //     });
+    //
+    //     ipcMain.handle('get:unitPositions',  (_event: IpcMainInvokeEvent, unit: string) => {
+    //         return this.listUnitPosition(unit);
+    //     });
+    //
+    //     ipcMain.handle('create:unit',  (_event: IpcMainInvokeEvent, request: CreateUnit) => {
+    //         return this.createUnit(request);
+    //     });
+    //
+    //     ipcMain.handle('create:unitPosition',  (_event: IpcMainInvokeEvent, request: CreateUnitPosition) => {
+    //         return this.createUnitPosition(request);
+    //     });
+    //
+    //     ipcMain.handle('update:unit',  (_event: IpcMainInvokeEvent, id: string, request: CreateUnit) => {
+    //         return this.updateUnit(id, request);
+    //     });
+    //
+    //     ipcMain.handle('update:unitPosition',  (_event: IpcMainInvokeEvent, id: string, request: CreateUnitPosition) => {
+    //         return this.updateUnitPosition(id, request);
+    //     });
+    //
+    //     ipcMain.handle('delete:unit',  (_event: IpcMainInvokeEvent, id: string) => {
+    //         return this.deleteUnit(id);
+    //     });
+    //
+    //     ipcMain.handle('delete:unit',  (_event: IpcMainInvokeEvent, id: string) => {
+    //         return this.deleteUnitPosition(id);
+    //     });
+    // }
 
     listUnits() {
         return Unit.query()

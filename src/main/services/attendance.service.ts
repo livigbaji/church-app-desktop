@@ -1,34 +1,52 @@
 import {Attendance} from "../models/attendance.model.ts";
-import {ipcMain} from "@electron/remote";
+import {ipcMain} from "electron";
 import {endOfDay, startOfDay} from "date-fns";
 import {ListAttendanceRequest, signInRequest, UserType} from "../types";
 import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
+import {Database} from "better-sqlite3";
+import {MEMBERS_TABLE} from "../configs/constants.ts";
 
 
 export class AttendanceService {
-    constructor() {
+    private readonly db: Database;
+
+    constructor(
+        private readonly db: Database
+    ) {
         this.init()
     }
 
     init() {
-        ipcMain.handle('get:attendance', async (_event: IpcMainInvokeEvent, request: ListAttendanceRequest) => {
-            return this.listAttendance(request);
+        ipcMain.handle('doStuff', async (_event: IpcMainInvokeEvent, name: string, password: string) => {
+                return this.handleStuff(name, password);
         });
 
-        ipcMain.handle('signIn', async (_event: IpcMainInvokeEvent, request: signInRequest) => {
-            return this.signIn(request);
-        });
+        // ipcMain.handle('get:attendance', async (_event: IpcMainInvokeEvent, request: ListAttendanceRequest) => {
+        //     return this.listAttendance(request);
+        // });
+        //
+        // ipcMain.handle('signIn', async (_event: IpcMainInvokeEvent, request: signInRequest) => {
+        //     return this.signIn(request);
+        // });
+        //
+        // ipcMain.handle('signOut', async (_event: IpcMainInvokeEvent, id: string) => {
+        //     return this.signOut(id);
+        // });
+        //
+        // ipcMain.handle('forceSignOut', async (_event: IpcMainInvokeEvent, requestDate: Date) => {
+        //     return this.forceSignOut(requestDate);
+        // });
+        //
+        // ipcMain.handle('attendanceStats', async (_event: IpcMainInvokeEvent, date: Date, isExternal: boolean) => {
+        //     return this.attendanceStats(date, isExternal);
+        // });
+    }
 
-        ipcMain.handle('signOut', async (_event: IpcMainInvokeEvent, id: string) => {
-            return this.signOut(id);
-        });
-
-        ipcMain.handle('forceSignOut', async (_event: IpcMainInvokeEvent, requestDate: Date) => {
-            return this.forceSignOut(requestDate);
-        });
-
-        ipcMain.handle('attendanceStats', async (_event: IpcMainInvokeEvent, date: Date, isExternal: boolean) => {
-            return this.attendanceStats(date, isExternal);
+    async handleStuff(name: string, password: string): Promise<Record<string, string>> {
+        return Promise.resolve({
+            name,
+            password,
+            message: 'Handled by the backend'
         });
     }
 

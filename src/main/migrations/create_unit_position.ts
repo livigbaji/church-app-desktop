@@ -1,7 +1,7 @@
 import { UNIT_POSITION_TABLE } from "../configs/constants.ts";
 
-export default class UnitPosition {
-    static name: string = "20240313205358";
+export default class CreateUnitPosition {
+    static name: string = "20240313205358_create_unit_position_table";
 
     static up(): string {
         return `

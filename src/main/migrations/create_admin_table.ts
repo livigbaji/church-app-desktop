@@ -1,7 +1,7 @@
 import { ADMIN_TABLE } from "../configs/constants.ts";
 
-export default class AdminTable {
-    static name: string = "20240310202540";
+export default class CreateAdminTable {
+    static name: string = "20240310202540_create_admin_table";
 
     static up(): string {
         return `

@@ -4,15 +4,20 @@ import { Admin } from "../models/admin.model.ts";
 import { createHash } from 'crypto';
 // import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 import { ipcRenderer } from "electron";
+import {Database} from "better-sqlite3";
+import {MEMBERS_TABLE} from "../configs/constants.ts";
 
 const hash = (inputString: string) => {
     return createHash('md5').update(inputString).digest("hex")
 }
 
 export class AdminService {
-    // constructor() {
-    //  //   this.init()
-    // }
+    private static db: Database;
+    constructor(
+        private readonly db: Database,
+    ) {
+     //   this.init()
+    }
 
 
 
@@ -38,10 +43,16 @@ export class AdminService {
     //     });
     // }
 
-    static async login(phone: string, pin: string) {
-        const member = await Member.query().where({
-            phoneNumber: phone
-        }).first();
+    async testStuff() {
+        console.log("testStuff");
+        return this.db.query(`SELECT * FROM ${MEMBERS_TABLE} WHERE phone = '07038761251'`);
+    }
+
+    async login(phone: string, pin: string) {
+        const member = this.db.query(`SELECT * FROM ${MEMBERS_TABLE} WHERE phone = ${phone}`);
+        // const member = await Member.query().where({
+        //     phoneNumber: phone
+        // }).first();
 
         if (!member) {
             return Promise.reject('incorrect phone number');

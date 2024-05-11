@@ -1,8 +1,8 @@
 import { UNIT_TABLE } from "../configs/constants.ts";
 
 
-export default class UnitTable {
-    static name: string = "20240313205126";
+export default class CreateUnitTable {
+    static name: string = "20240313205126_create_unit_table";
 
     static up(): string {
         return `

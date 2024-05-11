@@ -1,7 +1,7 @@
 import { MEMBERS_TABLE } from "../configs/constants.ts";
 
-export default class MembersTable {
-    static name: string = "20240309221453";
+export default class CreateMembersTable {
+    static name: string = "20240309221453_create_members_table";
 
     static up(): string {
         return `

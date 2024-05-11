@@ -1,7 +1,7 @@
 import { ATTENDANCE_TABLE } from "../configs/constants.ts";
 
-export default class AttendanceTable {
-    static name: string = "20240309221513";
+export default class CreateAttendanceTable {
+    static name: string = "20240309221513_create_attendance_table";
 
     static up(): string {
         return `

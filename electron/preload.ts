@@ -1,5 +1,5 @@
-// import { AdminService } from './../src/main/services/admin.service';
-import { contextBridge } from 'electron'
+import {contextBridge, ipcRenderer} from 'electron'
+// import {existingServices} from "../src/main/database.ts";
 contextBridge.exposeInMainWorld('stuffAPI', {
   hello: (word: string) => {
     return {
@@ -7,7 +7,9 @@ contextBridge.exposeInMainWorld('stuffAPI', {
       service: 'backend'
     };
   },
-  // database: db,
+  database:  {
+    doStuff: (name: string, password: string) => ipcRenderer.invoke('doStuff', name, password)
+  },
   // adminSerivce: AdminService
 })
 // contextBridge.exposeInMainWorld('churchAPI', {

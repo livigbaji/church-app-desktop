@@ -1,7 +1,14 @@
 import 'reflect-metadata'; // Required by TypoORM.
 import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
-import { initDB } from "../src/main/database.ts";
+import { initServices } from "../src/main/database.ts";
+import {getSqlite3, runMigration} from "./db.ts";
+import CreateAdminTable from "../src/main/migrations/create_admin_table.ts";
+import CreateExternalsTable from "../src/main/migrations/create_external_members_table.ts";
+import CreateAttendanceTable from "../src/main/migrations/create_attendace_table.ts";
+import CreateUnitTable from "../src/main/migrations/create_unit_table.ts";
+import CreateUnitPosition from "../src/main/migrations/create_unit_position.ts";
+import CreateMembersTable from "../src/main/migrations/create_members_table.ts";
 
 // The built directory structure
 //
@@ -21,6 +28,16 @@ let win: BrowserWindow | null
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
 function createWindow() {
+  const db = getSqlite3('here.sqlite3');
+  runMigration([
+      CreateAdminTable,
+      CreateExternalsTable,
+      CreateAttendanceTable,
+      CreateUnitTable,
+      CreateUnitPosition,
+      CreateMembersTable
+  ]);
+  initServices(db);
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
@@ -57,9 +74,6 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    try { initDB() } catch (e) {
-      // stuff
-    }
     createWindow()
   }
 })

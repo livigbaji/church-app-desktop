@@ -1,18 +1,6 @@
-import {Model, snakeCaseMappers} from 'objection';
-import {ATTENDANCE_TABLE} from "../configs/constants.ts";
 import {AttendanceStatus, UserType} from "../types";
 
-
-export class Attendance extends Model {
-    static idColumn = 'id';
-    static get tableName() {
-        return ATTENDANCE_TABLE
-    }
-
-    static get columnNameMappers() {
-        return snakeCaseMappers();
-    }
-
+export class Attendance{
     id!: string;
     user!: string;
     userType!: UserType;

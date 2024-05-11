@@ -1,16 +1,4 @@
-import {Model, snakeCaseMappers} from "objection";
-import {UNIT_POSITION_TABLE, UNIT_TABLE} from "../configs/constants.ts";
-
-
-export class Unit extends Model {
-    static idColumn = 'id';
-    static get tableName() {
-        return UNIT_TABLE
-    }
-
-    static get columnNameMappers() {
-        return snakeCaseMappers();
-    }
+export class Unit{
     id!: string;
 
     leader!: string;
@@ -22,15 +10,7 @@ export class Unit extends Model {
     updatedAt!: Date;
 }
 
-export class UnitPosition extends Model {
-    static idColumn = 'id';
-    static get tableName() {
-        return UNIT_POSITION_TABLE
-    }
-
-    static get columnNameMappers() {
-        return snakeCaseMappers();
-    }
+export class UnitPosition {
     id!: string;
 
     group!: string;

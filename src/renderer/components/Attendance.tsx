@@ -4,8 +4,8 @@ import Header from "./Header";
 
 const Attendance : React.FC = () => {
 
-  const getData = () => {
-   const stuff = window.stuffAPI.hello("World");
+  const getData = async () => {
+   const stuff = await window.stuffAPI.database.doStuff('Livinus', 'somethingsecure');
    console.log(stuff);
   }
 
