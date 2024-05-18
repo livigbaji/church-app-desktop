@@ -19,3 +19,12 @@
 h5 {
     color: #525252;
 }
+
+form {
+    margin: 20px;
+}
+
+form p {
+    font-size: 18px;
+    letter-spacing: 0.1em;
+}

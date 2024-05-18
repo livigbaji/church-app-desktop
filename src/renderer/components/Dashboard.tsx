@@ -1,5 +1,8 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Dashboard.css";
 import Header from "./Header";
+import LineChart from "./charts/LineChart";
+import PieChart from "./charts/PieChart";
 import { BsPeople, BsCollection, BsXCircle, BsCalendar } from "react-icons/bs";
 
 const fakeDashboardData = [
@@ -30,19 +33,18 @@ const fakeDashboardData = [
 ];
 
 const Dashboard: React.FC = () => {
-  
   return (
-    <div className="container">
+    <div className="container mt-5">
       <Header pageTitle="Dashboard" />
       <div className="row">
         {fakeDashboardData.map((data) => (
           <div className="col-md-3 mb-4" key={data.id}>
-            <div className="card h-100 border-dark">
+            <div className="dashboard-card h-100 border-dark">
               <div className="card-body d-flex align-items-center">
                 <div className="dashboard-card-icon mr-2">
                   <data.icon />
                 </div>
-                <div className="dashboard-card-text flex-grow-1"> 
+                <div className="dashboard-card-text flex-grow-1">
                   <p className="m-0 font-weight-bold">{data.numb}</p>
                   <p className="m-0">{data.text}</p>
                 </div>
@@ -51,9 +53,19 @@ const Dashboard: React.FC = () => {
           </div>
         ))}
       </div>
-      {/* <PieChart/>
-      <LineChart/> */}
-      <button>TEST</button>
+
+      <div className="row">
+        <div className="col-md-6 mb-4">
+          <div className="chart-container">
+            <LineChart />
+          </div>
+        </div>
+        <div className="col-md-6 mb-4">
+          <div className="chart-container">
+            <PieChart />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

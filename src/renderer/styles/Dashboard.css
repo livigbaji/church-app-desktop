@@ -1,8 +1,10 @@
+/* Dashboard container */
 .dashboard {
     flex: 1;
     overflow-y: scroll;
 }
 
+/* Dashboard header */
 .dashboard-header {
     position: sticky;
     top: 0;
@@ -11,17 +13,21 @@
     padding: 15px 20px;
 }
 
+/* Dashboard card */
 .dashboard-card {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 15px;
 }
 
+/* Icon spacing in dashboard card */
 .dashboard-card-icon {
     margin-right: 10px;
+    font-size: 2rem;
     /* Adjust spacing between icon and text */
 }
 
+/* Text styling in dashboard card */
 .dashboard-card-text p {
     margin: 0;
     /* Remove default paragraph margin */
@@ -30,4 +36,33 @@
 .dashboard-card-text p:first-child {
     font-weight: bold;
     /* Make the first paragraph (number) bold */
+}
+
+/* Chart container */
+.chart-container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 500px;
+    /* Increased height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container for overall styling */
+.container {
+    margin-top: 20px;
+}
+
+/* Custom styling for rows and columns */
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-md-6 {
+    padding-left: 0;
+    padding-right: 0;
 }
