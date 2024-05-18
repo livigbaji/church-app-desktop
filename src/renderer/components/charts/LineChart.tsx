@@ -1,24 +1,32 @@
-import React from 'react';
+import { Chart, CategoryScale, LinearScale, LineElement, PointElement, LineController, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-const LineChart: React.FC = () => {
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    datasets: [
-      {
-        label: 'Active Members',
-        data: [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85], // Dummy data for active members in each month
-        fill: false,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
-      }
-    ]
-  };
+// Register the required components
+Chart.register(CategoryScale, LinearScale, LineElement, PointElement, LineController, Title, Tooltip, Legend);
 
+const labels = ["January", "February", "March", "April", "May", "June"];
+
+const data = {
+  labels: labels,
+  datasets: [
+    {
+      label: "Total Attendance Report",
+      backgroundColor: "rgba(19, 32, 52, 1)",
+      borderColor: "rgba(22, 91, 170, 1)",
+      data: [0, 10, 5, 2, 20, 30, 45],
+    },
+  ],
+};
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false, // Allow the chart to resize freely
+};
+
+const LineChart = () => {
   return (
-    <div>
-      <h2>Active Members by Month</h2>
-      <Line data={data} />
+    <div style={{ height: '100%', width: '100%' }}>
+      <Line data={data} options={options} />
     </div>
   );
 };

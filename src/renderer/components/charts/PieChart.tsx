@@ -1,22 +1,26 @@
-import React from 'react';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-const PieChart: React.FC = () => {
-  const data = {
-    labels: ['Present & Serving', 'Absent'],
-    datasets: [
-      {
-        label: 'Attendance Status',
-        data: [75, 25], // Dummy data for percentage of present & serving vs absent
-        backgroundColor: ['#36A2EB', '#FF6384'],
-        hoverOffset: 4
-      }
-    ]
-  };
+// Register the required components
+Chart.register(ArcElement, Tooltip, Legend);
 
+const data = {
+  labels: ['Male', 'Female'],
+  datasets: [
+    {
+      label: 'Attendance',
+      data: [60, 40], // Example data: 60 males and 40 females
+      backgroundColor: ['rgba(19, 32, 52, 1)', 'rgba(22, 91, 170, 1)'],
+      borderColor: ['rgba(19, 32, 52, 1)', 'rgba(22, 91, 170, 1)'],
+      borderWidth: 1,
+    },
+  ],
+};
+
+const PieChart = () => {
   return (
     <div>
-      <h2>Attendance Status</h2>
+      <h6>Male vs Female Attendance</h6>
       <Pie data={data} />
     </div>
   );

@@ -40,3 +40,14 @@
   - [ ] Deactivate
   - [ ] View Logs
   - [ ] List
+
+
+### Install
+```shell
+npm i -s tedious mysql mysql2 oracledb pg pg-query-stream sqlite3
+```
+
+### Uninstall
+```shell
+npm uninstall tedious mysql mysql2 oracledb pg pg-query-stream sqlite3
+```

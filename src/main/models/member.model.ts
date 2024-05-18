@@ -1,17 +1,6 @@
 import {Gender, MaritalStatus, MemberStatus} from "../types";
-import {MEMBERS_TABLE} from "../configs/constants.ts";
-import {Model, snakeCaseMappers} from "objection";
 
-export class Member extends Model {
-
-    static idColumn = 'id';
-    static get tableName() {
-        return MEMBERS_TABLE
-    }
-
-    static get columnNameMappers() {
-        return snakeCaseMappers();
-    }
+export class Member {
     id!: string;
     firstName!: string;
     middleName?: string;

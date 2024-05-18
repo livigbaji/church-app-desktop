@@ -72,3 +72,9 @@ export type CreateUnitPosition = {
     name: string;
     description: string;
 }
+
+export interface DBMigration {
+    name: string,
+    up: () => string,
+    down: () => string,
+}
