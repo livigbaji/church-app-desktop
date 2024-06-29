@@ -1,5 +1,5 @@
 import {Model, snakeCaseMappers} from "objection";
-import {UNIT_POSITION_TABLE, UNIT_TABLE} from "../configs/constants.ts";
+import {UNIT_POSITION_TABLE, UNIT_TABLE} from "../configs/constants";
 
 
 export class Unit extends Model {
