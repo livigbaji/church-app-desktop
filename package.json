@@ -1,9 +1,9 @@
 {
-  "name": "electron-vite-react",
-  "version": "2.2.0",
+  "name": "church-electron-app",
+  "version": "0.0.1",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "Church electron application",
+  "author": "Livinus <bestbrain10@gmail.com>",
   "license": "MIT",
   "private": true,
   "debug": {
@@ -17,7 +17,10 @@
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "rebuild": "electron rebuilder.js",
+    "postinstall": "npm run rebuild",
+    "migration:create": "knex migrate:make --migrations-directory=electron/backend/migrations"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -25,7 +28,11 @@
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "apexcharts": "^3.49.2",
+    "better-sqlite3": "^11.1.1",
+    "date-fns": "^3.6.0",
     "electron-updater": "^6.1.8",
+    "knex": "^3.1.0",
+    "objection": "^3.1.4",
     "react": "^17.0.0 || ^18.0.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^17.0.0 || ^18.0.0",
