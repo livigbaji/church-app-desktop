@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import SidebarOptions from "./SidebarOptions";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
@@ -18,8 +18,6 @@ const menuItems = [
 ];
 
 const SideBar: React.FC = () => {
-  const location = useLocation();
-
   return (
     <Stack
       sx={{
