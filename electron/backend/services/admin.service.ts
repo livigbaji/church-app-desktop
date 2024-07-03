@@ -1,7 +1,8 @@
 import {Member} from "../models/member.model";
 import {Admin} from "../models/admin.model";
 import { createHash } from 'crypto';
-import {Handler} from "../handler";
+import {Handler, Validate} from "../handler";
+import {ChangePinRequest, LoginRequest} from "../types";
 
 export class AdminService {
     private hash(inputString: string) {
@@ -9,7 +10,8 @@ export class AdminService {
     }
 
     @Handler('login')
-    async login(phone: string, pin: string) {
+    async login(@Validate(LoginRequest) request: LoginRequest) {
+        const { phone, pin } = request;
         const member = await Member.query().where({
             phoneNumber: phone
         }).first();
@@ -59,7 +61,8 @@ export class AdminService {
 
 
     @Handler('changePin')
-    async changePin(user: string, oldPin: string, newPin: string) {
+    async changePin(@Validate(ChangePinRequest) request: ChangePinRequest) {
+        const { user, oldPin, newPin } = request;
         const member = await Member.query().where({
             id: user
         }).first();

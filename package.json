@@ -20,7 +20,7 @@
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test",
     "rebuild": "electron rebuilder.js",
-    "migration:create": "knex migrate:make --migrations-directory=electron/backend/migrations"
+    "migration:create": "knex migrate:make -x=cjs --migrations-directory=electron/backend/migrations "
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -29,6 +29,8 @@
     "@mui/material": "^5.15.20",
     "apexcharts": "^3.49.2",
     "better-sqlite3": "^11.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "date-fns": "^3.6.0",
     "electron-updater": "^6.1.8",
     "knex": "^3.1.0",
@@ -36,7 +38,8 @@
     "react": "^17.0.0 || ^18.0.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^17.0.0 || ^18.0.0",
-    "react-router-dom": "^6.24.0"
+    "react-router-dom": "^6.24.0",
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",

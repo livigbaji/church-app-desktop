@@ -1,12 +1,12 @@
 import {Attendance} from "../models/attendance.model";
 import {endOfDay, startOfDay} from "date-fns";
 import {ListAttendanceRequest, signInRequest, UserType} from "../types";
-import {Handler} from "../handler";
+import {Handler, Validate} from "../handler";
 
 
 export class AttendanceService {
     @Handler('get:attendance')
-    listAttendance(request: ListAttendanceRequest) {
+    listAttendance(@Validate(ListAttendanceRequest) request: ListAttendanceRequest) {
         const date = request.date || new Date();
         return Attendance.query()
             .whereBetween('timeIn', [startOfDay(date), endOfDay(date)])
@@ -18,7 +18,7 @@ export class AttendanceService {
     }
 
     @Handler('signIn')
-    signIn(request: signInRequest) {
+    signIn(@Validate(signInRequest) request: signInRequest) {
         return Attendance.query().insert({
             userType: request.isExternal ? UserType.EXTERNAL : UserType.MEMBER,
             user: request.user,
