@@ -1,6 +1,7 @@
 import {Unit, UnitPosition} from "../models/unit.model";
 import {CreateUnit, CreateUnitPosition} from "../types";
-import {Handler} from "../handler";
+import {Handler, Validate} from "../handler";
+import {request} from "@playwright/test";
 
 export class UnitService {
     @Handler('get:units')
@@ -16,7 +17,7 @@ export class UnitService {
     }
 
     @Handler('create:unit')
-    createUnit(request: CreateUnit) {
+    createUnit(@Validate(CreateUnit) request: CreateUnit) {
         return Unit.query().insert({
             ...(request.leader && { leader: request.leader }),
             name: request.name,
@@ -25,7 +26,7 @@ export class UnitService {
     }
 
     @Handler('create:unitPosition')
-    createUnitPosition(request: CreateUnitPosition) {
+    createUnitPosition(@Validate(CreateUnitPosition) request: CreateUnitPosition) {
         return UnitPosition.query().insert({
             group: request.group,
             name: request.name,
@@ -34,7 +35,7 @@ export class UnitService {
     }
 
     @Handler('update:unit')
-    updateUnit(id: string, request: CreateUnit) {
+    updateUnit(id: string, @Validate(CreateUnit) request: CreateUnit) {
         return Unit.query().patch({
             ...(request.leader && { leader: request.leader }),
             name: request.name,
@@ -43,7 +44,7 @@ export class UnitService {
     }
 
     @Handler('update:unitPosition')
-    updateUnitPosition(id: string, request: CreateUnitPosition) {
+    updateUnitPosition(id: string, @Validate(CreateUnitPosition) request: CreateUnitPosition) {
         return UnitPosition.query().patch({
             group: request.group,
             name: request.name,
