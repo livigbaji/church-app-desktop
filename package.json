@@ -20,7 +20,7 @@
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test",
     "rebuild": "electron rebuilder.js",
-    "migration:create": "knex migrate:make -x=cjs --migrations-directory=electron/backend/migrations "
+    "migration:create": "knex migrate:make --migrations-directory=electron/backend/migrations "
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
