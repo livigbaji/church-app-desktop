@@ -1,8 +1,8 @@
 import {Member} from "../models/member.model";
 import {ExternalMembers} from "../models/external-member.model";
-import {ExternalMemberLabel, MemberStatus} from "../types";
-import {Handler, Validate} from "../handler";
-import {TestStuff, ListMembersRequest, CreateMemberRequest, CreateExternalMemberRequest} from "../types/members.dto";
+import {Handler, OnSuccess, Validate} from "../handler";
+import {TestStuff, ExternalMemberLabel, ListMembersRequest, MemberStatus, CreateMemberRequest, CreateExternalMemberRequest} from "../types";
+import knex from "knex";
 
 export class MemberService {
     @Handler('doStuff')
@@ -13,8 +13,16 @@ export class MemberService {
             lastName: 'liv but lastName',
             middleName: 'liv but middleName',
             unit: 'Hospitality',
-            label: ExternalMemberLabel.WORKER
+            label: ExternalMemberLabel.WORKER,
+            deleted: false
         })
+    }
+
+    @OnSuccess('doStuff')
+    async runSomeOtherStuff(stuff: ExternalMembers) {
+        console.log({ stuff });
+        const f = await ExternalMembers.query().where({ id: stuff.id }).first();
+        console.log({ f });
     }
 
 
@@ -44,22 +52,34 @@ export class MemberService {
 
     @Handler('create:member')
     createMember(@Validate(CreateMemberRequest) member: CreateMemberRequest) {
-        return Member.query().insert(member);
+        return Member.query().insert({
+            ...member,
+            deleted: false,
+        });
     }
 
     @Handler('update:member')
     updateMember(id: string, @Validate(CreateMemberRequest) member: CreateMemberRequest) {
-        return Member.query().findById(id).patch(member)
+        return Member.query().findById(id).patch({
+            ...member,
+            updatedAt: Member.knex().fn.now()
+        })
     }
 
     @Handler('create:external-member')
     createExternalMember(@Validate(CreateExternalMemberRequest) member: Partial<ExternalMembers>) {
-        return ExternalMembers.query().insert(member);
+        return ExternalMembers.query().insert({
+            ...member,
+            deleted: false
+        });
     }
 
     @Handler('update:external-member')
     updateExternalMember(id: string, @Validate(CreateExternalMemberRequest) member: Partial<ExternalMembers>) {
-        return ExternalMembers.query().findById(id).patch(member)
+        return ExternalMembers.query().findById(id).patch({
+            ...member,
+            updatedAt: ExternalMembers.knex().fn.now()
+        })
     }
 
     @Handler('delete:member')
@@ -77,7 +97,7 @@ export class MemberService {
         return Member.query().findById(id).patchAndFetch({
             status: MemberStatus.SUSPENDED,
             suspensionDescription: note,
-            suspendedAt: new Date(),
+            suspendedAt: Member.knex().fn.now(),
         })
     }
 

@@ -3,7 +3,23 @@ import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 import 'reflect-metadata';
 import {plainToInstance} from "class-transformer";
 import {validateOrReject, ValidationError} from "class-validator";
+import EventEmitter  from 'node:events';
 const validateMetadataKey = Symbol("Validate");
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
+
+
+export function OnSuccess(event: string) {
+    return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+        const method = descriptor.value!;
+        myEmitter.on(`success-${event}`, (...payload: any[]) => {
+            return method.apply(target, payload)
+        });
+    }
+}
+
 
 /**
  * Annotation we can attach to service methods, so they can handle ipc events
@@ -35,8 +51,14 @@ export function Handler(event: string, useInvokeEvent = false) {
             }
             const extraArgs = useInvokeEvent ? [_event] : [];
             return method.apply(target, extraArgs.concat(args))
-                .then((data: unknown) => ({ success: true, data}))
-                .catch((error: Error) => ({ success: false, error}));
+                .then((data: unknown) => {
+                    myEmitter.emit(`success-${event}`, data);
+                    return { success: true, data}
+                })
+                .catch((error: Error) => {
+                    myEmitter.emit(`error-${event}`, error);
+                    return { success: false, error}
+                });
         });
     }
 }

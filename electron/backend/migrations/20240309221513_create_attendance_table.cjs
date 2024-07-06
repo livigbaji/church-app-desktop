@@ -15,7 +15,10 @@ module.exports.up = async function (knex) {
         table.string('status');
         table.boolean('deleted').defaultTo(false);
         table.timestamp('deleted_at').nullable();
-        table.timestamps();
+        table.timestamps({
+            useTimestamps: true,
+            defaultToNow: true,
+        });
     });
 }
 
