@@ -23,7 +23,7 @@ export class AttendanceService {
             userType: request.isExternal ? UserType.EXTERNAL : UserType.MEMBER,
             user: request.user,
             position: request.position,
-            timeIn: request.timeIn,
+            timeIn: Attendance.knex().raw(`datetime(${request.timeIn}, 'localtime')`),
             status: request.status
         });
     }
@@ -31,13 +31,13 @@ export class AttendanceService {
     @Handler('signOut')
     signOut(id: string) {
         return Attendance.query().patchAndFetchById(id, {
-            timeOut: new Date()
+            timeOut: Attendance.knex().fn.now()
         });
     }
 
     @Handler('forceSignOut')
     async forceSignOut(requestDate: Date) {
-        const date = requestDate || new Date();
+        const date = requestDate || Attendance.knex().fn.now();
         await Attendance.query().patch({
             timeOut: new Date()
         }).whereBetween('timeIn', [startOfDay(date), endOfDay(date)])
