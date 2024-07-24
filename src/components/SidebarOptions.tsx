@@ -4,17 +4,21 @@ import { Box, Stack, Button } from "@mui/material";
 interface SidebarOptionsProps {
   text: string;
   startIcon: React.ReactNode;
+  endIcon?: React.ReactNode; // Optional end icon
   textTransform?: React.CSSProperties["textTransform"];
   sx?: React.CSSProperties;
   active?: boolean; // New prop to indicate if the option is active
+  onClick?: () => void; // Optional onClick handler
 }
 
 const SidebarOptions: React.FC<SidebarOptionsProps> = ({
   text,
   startIcon,
+  endIcon,
   textTransform = "none",
   sx = {}, // Default to an empty object
   active = false, // Default to false
+  onClick,
 }) => {
   return (
     <Stack
@@ -36,14 +40,18 @@ const SidebarOptions: React.FC<SidebarOptionsProps> = ({
           transition: "all 0.3s ease",
           width: "200px",
         },
-        ...sx, // Spread the custom styles here
+        ...sx,
       }}
+      onClick={onClick} // Attach onClick handler
     >
-      <Box>
+      <Box
+        sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
+      >
         <Button
           disableRipple
           color="inherit"
           startIcon={startIcon}
+          endIcon={endIcon}
           sx={{ textTransform }}
         >
           {text}

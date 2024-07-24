@@ -17,6 +17,7 @@ import {
   SelectChangeEvent,
   InputLabel,
   FormControl,
+  Checkbox,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -39,6 +40,7 @@ const Members: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState("");
   const [filteredRows, setFilteredRows] = useState(rows);
+  const [selected, setSelected] = useState<number[]>([]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -67,7 +69,7 @@ const Members: React.FC = () => {
   const handleUploadClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".csv";
+    fileInput.accept = ".csv, .xls, .xlsx";
     fileInput.onchange = (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
@@ -76,6 +78,38 @@ const Members: React.FC = () => {
       }
     };
     fileInput.click();
+  };
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelected = filteredRows.map((row) => row.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleCheckboxClick = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: number
+  ) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: number[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
   };
 
   return (
@@ -148,6 +182,25 @@ const Members: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    indeterminate={
+                      selected.length > 0 &&
+                      selected.length < filteredRows.length
+                    }
+                    checked={
+                      filteredRows.length > 0 &&
+                      selected.length === filteredRows.length
+                    }
+                    onChange={handleSelectAllClick}
+                    sx={{
+                      color: "#132034",
+                      "&.Mui-checked": {
+                        color: "#132034",
+                      },
+                    }}
+                  />
+                </TableCell>
                 <TableCell>S/N</TableCell>
                 <TableCell>Full Name</TableCell>
                 <TableCell>Phone Number</TableCell>
@@ -160,6 +213,18 @@ const Members: React.FC = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow key={row.id}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={selected.indexOf(row.id) !== -1}
+                        onChange={(event) => handleCheckboxClick(event, row.id)}
+                        sx={{
+                          color: "#132034",
+                          "&.Mui-checked": {
+                            color: "#132034",
+                          },
+                        }}
+                      />
+                    </TableCell>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.phone}</TableCell>

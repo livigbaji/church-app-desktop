@@ -7,6 +7,8 @@ import Attendance from "./components/Attendance";
 import Members from "./components/Members";
 import SubUnit from "./components/SubUnit";
 import Profiles from "./components/Profiles";
+import Birthdays from "./components/Birthdays"; // Import the Birthdays component
+import AddMember from "./components/AddMember";
 
 const App: React.FC = () => {
   return (
@@ -25,6 +27,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Dashboard />} />
             <Route path="/attendance" element={<Attendance />} />
             <Route path="/members" element={<Members />} />
+            <Route path="/members/birthdays" element={<Birthdays />} />
+            <Route path="/members/newmember" element={<AddMember />} />
             <Route path="/subunits" element={<SubUnit />} />
             <Route path="/profiles" element={<Profiles />} />
           </Routes>
