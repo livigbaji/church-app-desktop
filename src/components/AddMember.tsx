@@ -114,7 +114,17 @@ const AddMember: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Form values:", formValues);
+    // Send form values to main process
+    window.ipcRenderer
+      .invoke("create:member", formValues)
+      .then((response) => {
+        console.log("Member created:", response);
+        // Handle successful creation (e.g., show a success message, redirect, etc.)
+      })
+      .catch((error) => {
+        console.error("Error creating member:", error);
+        // Handle error
+      });
   };
 
   return (
