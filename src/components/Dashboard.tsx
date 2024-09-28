@@ -1,52 +1,128 @@
-import React from "react";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import Linegraph from "./charts/Linegraph";
-import Piechart from "./charts/Piechart";
-import { PeopleAlt, Group, EventBusy, Cake } from "@mui/icons-material";
+import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
+import TableViewOutlinedIcon from "@mui/icons-material/TableViewOutlined";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 
-const statistics = [
-  { label: "Total Members", value: 35, icon: <PeopleAlt fontSize="large" /> },
-  { label: "Total Sub-Units", value: 8, icon: <Group fontSize="large" /> },
-  { label: "Absent Last Week", value: 5, icon: <EventBusy fontSize="large" /> },
-  { label: "Upcoming Birthdays", value: 2, icon: <Cake fontSize="large" /> },
-];
+// Function to fetch total members
+const getTotalMembers = async (search: string) => {
+  return window.ipcRenderer.invoke("get:members", { search });
+};
+
+// Function to fetch total units
+const getTotalUnits = async (search: string) => {
+  return window.ipcRenderer.invoke("get:units", { search });
+};
+
+// Function to fetch upcoming birthdays
+const getUpcomingBirthdays = async (search: string) => {
+  return window.ipcRenderer.invoke("birthdays:member", { search });
+};
+
+// Reusable StatCard Component
+interface StatCardProps {
+  count: number;
+  title: string;
+  Icon: React.ElementType;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ count, title, Icon }) => (
+  <Box
+    sx={{
+      display: "flex",
+      padding: 2,
+      alignItems: "center",
+      bgcolor: "#FFFFFF",
+      width: "256px",
+      height: "106px",
+      borderRadius: "5px",
+    }}
+  >
+    <Icon style={{ height: 30, width: 30 }} />
+    <Box sx={{ marginLeft: 2 }}>
+      <Typography
+        sx={{
+          color: "#000000",
+          fontWeight: 700,
+          fontSize: "25px",
+        }}
+      >
+        {count}
+      </Typography>
+      <Typography
+        sx={{
+          font: "inter",
+          fontSize: "14px",
+          fontWeight: 400,
+          color: "#525252",
+        }}
+      >
+        {title}
+      </Typography>
+    </Box>
+  </Box>
+);
 
 const Dashboard: React.FC = () => {
+  const [totalMembers, setTotalMembers] = useState(0);
+  const [totalUnits, setTotalUnits] = useState(0);
+  const [upcomingBirthdays, setUpcomingBirthdays] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const members = await getTotalMembers("");
+        const units = await getTotalUnits("");
+        const birthdays = await getUpcomingBirthdays("");
+
+        setTotalMembers(members.length);
+        setTotalUnits(units.length);
+        setUpcomingBirthdays(birthdays.length);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <Box sx={{ flexGrow: 1, padding: "20px", overflowY: "auto" }}>
-      <Header pageTitle="Dashboard" />
-      <Grid container spacing={2}>
-        {statistics.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Paper sx={{ padding: 3, display: "flex", alignItems: "center" }}>
-              <Box sx={{ marginRight: 1 }}>{stat.icon}</Box>
-              <div>
-                <Typography variant="h6" sx={{ textAlign: "left" }}>
-                  {stat.value}
-                </Typography>
-                <Typography variant="subtitle1" sx={{ textAlign: "left" }}>
-                  {stat.label}
-                </Typography>
-              </div>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid container spacing={2} sx={{ marginTop: "20px" }}>
-        <Grid item xs={12} md={8}>
-          <Paper sx={{ padding: 3 }}>
-            <Typography variant="h6">Total Attendance Report</Typography>
-            <Linegraph />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ padding: 3 }}>
-            <Typography variant="h6">Males vs Females</Typography>
-            <Piechart />
-          </Paper>
-        </Grid>
-      </Grid>
+    <Box>
+      <Header pageTitle={"Dashboard"} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <StatCard
+          count={totalMembers}
+          title="TOTAL MEMBERS"
+          Icon={Groups2OutlinedIcon}
+        />
+        <StatCard
+          count={totalUnits}
+          title="TOTAL SUB-UNITS"
+          Icon={TableViewOutlinedIcon}
+        />
+        <StatCard
+          count={0}
+          title="ABSENT LAST WEEK"
+          Icon={HighlightOffOutlinedIcon}
+        />{" "}
+        {/* Placeholder for absent count */}
+        <StatCard
+          count={upcomingBirthdays}
+          title="UPCOMING BIRTHDAYS"
+          Icon={CakeOutlinedIcon}
+        />
+      </Box>
+
+      {/* Charts component */}
+      <Box>Charts</Box>
     </Box>
   );
 };

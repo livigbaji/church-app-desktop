@@ -1,116 +1,106 @@
-import React, { useState } from "react";
-import { Box, Stack, Collapse, List, ListItemButton } from "@mui/material";
-import { NavLink, useLocation } from "react-router-dom";
-import SidebarOptions from "./SidebarOptions";
-import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import RememberMeOutlinedIcon from "@mui/icons-material/RememberMeOutlined";
+import React from "react";
+import {
+  Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  Typography,
+} from "@mui/material";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import CakeIcon from "@mui/icons-material/Cake";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import AssignmentIndSharpIcon from "@mui/icons-material/AssignmentIndSharp";
+import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
-const menuItems = [
-  { text: "Dashboard", icon: <DashboardOutlinedIcon />, path: "/" },
-  { text: "Attendance", icon: <GroupsOutlinedIcon />, path: "/attendance" },
-  {
-    text: "Members",
-    icon: <RememberMeOutlinedIcon />,
-    path: "/members",
-    subItems: [
-      { text: "Birthdays", icon: <CakeIcon />, path: "/members/birthdays" },
-      {
-        text: "New Member",
-        icon: <PersonAddAltIcon />,
-        path: "/members/newmember",
-      },
-    ],
-  },
-  { text: "Sub-Units", icon: <GroupOutlinedIcon />, path: "/subunits" },
-  { text: "Profiles", icon: <PermIdentityOutlinedIcon />, path: "/profiles" },
+const drawerWidth = 269;
+
+const navigationItems = [
+  { text: "DashBoard", icon: <DashboardCustomizeOutlinedIcon />, path: "/" },
+  { text: "Attendance", icon: <TrendingUpOutlinedIcon />, path: "/attendance" },
+  { text: "Members", icon: <GroupOutlinedIcon />, path: "/members" },
+  { text: "Sub-Units", icon: <GroupAddOutlinedIcon />, path: "/subunits" },
+  { text: "Profiles", icon: <AssignmentIndSharpIcon />, path: "/profiles" },
 ];
 
-const SideBar: React.FC = () => {
+const Sidebar = () => {
   const location = useLocation();
-  const [open, setOpen] = useState(false);
-
-  const handleMembersClick = () => {
-    setOpen(!open);
-  };
-
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
 
   return (
-    <Stack
-      sx={{
-        backgroundColor: "#132034",
-        color: "white",
-        width: "269px",
-        height: "100vh",
-      }}
-    >
-      {menuItems.map((item, index) => (
-        <React.Fragment key={item.text}>
-          <NavLink
-            to={item.path}
-            style={{ textDecoration: "none", color: "inherit" }}
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            <SidebarOptions
-              text={item.text}
-              startIcon={item.icon}
-              endIcon={
-                item.subItems ? (
-                  open ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )
-                ) : undefined
-              }
-              sx={{ marginTop: index === 0 ? "40px" : 0 }}
-              active={isActive(item.path)}
-              onClick={item.subItems ? handleMembersClick : undefined}
-            />
-          </NavLink>
-          {item.subItems && (
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
-                {item.subItems.map((subItem) => (
-                  <NavLink
-                    key={subItem.text}
-                    to={subItem.path}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                  >
-                    <ListItemButton sx={{ pl: 4 }}>
-                      <SidebarOptions
-                        text={subItem.text}
-                        startIcon={subItem.icon}
-                        sx={{ paddingLeft: "20px" }}
-                        active={isActive(subItem.path)}
-                      />
-                    </ListItemButton>
-                  </NavLink>
-                ))}
-              </List>
-            </Collapse>
-          )}
-        </React.Fragment>
-      ))}
-      <Box sx={{ flexGrow: 1 }} />
-      <SidebarOptions
-        text="Logout"
-        startIcon={<MeetingRoomOutlinedIcon />}
-        sx={{ marginBottom: "15px" }}
-      />
-    </Stack>
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+            backgroundColor: "#132034",
+          },
+        }}
+      >
+        <List sx={{ pt: "100px" }}>
+          {navigationItems.map((item, index) => (
+            <ListItem
+              key={index}
+              component={NavLink}
+              to={item.path}
+              sx={{
+                backgroundColor:
+                  location.pathname === item.path ? "red" : "inherit",
+                "&.active": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  fontWeight: "bold",
+                },
+                "&:hover": {
+                  cursor: "pointer",
+                },
+                color: "#FFFFFF",
+                padding: "20px",
+              }}
+            >
+              <ListItemIcon sx={{ color: "#FFFFFF" }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItem>
+          ))}
+        </List>
+        <Button
+          variant="text"
+          color="error"
+          startIcon={<LogoutOutlinedIcon />}
+          sx={{
+            mt: "auto",
+            mb: 2,
+            color: "#FFFFFF",
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
+          }}
+        >
+          Log out
+        </Button>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          borderLeft: "1px solid #E6E8EC",
+          zIndex: 1,
+        }}
+      >
+        <Outlet />
+      </Box>
+    </Box>
   );
 };
 
-export default SideBar;
+export default Sidebar;

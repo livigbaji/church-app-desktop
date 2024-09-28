@@ -13,7 +13,7 @@ import AddMember from "./components/AddMember";
 const App: React.FC = () => {
   return (
     <Router>
-      <Box sx={{ display: "flex", height: "100vh" }}>
+      <Box sx={{ display: "flex", height: "100vh", bgcolor: "#F5F5F5" }}>
         <Sidebar />
         <Box
           component="main"
