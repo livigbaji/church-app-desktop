@@ -25,6 +25,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "./Header";
+import CustomSpeedDial from "./CustomSpeedDial";
 
 const rows = [
   { id: 1, name: "Trust Adekoye", phone: "09038476802", subunit: "Video" },
@@ -255,6 +256,8 @@ const Members: React.FC = () => {
           />
         </TableContainer>
       </Box>
+
+      <CustomSpeedDial actions={[]} />
     </div>
   );
 };

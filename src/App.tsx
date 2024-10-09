@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
@@ -13,7 +13,13 @@ import AddMember from "./components/AddMember";
 const App: React.FC = () => {
   return (
     <Router>
-      <Box sx={{ display: "flex", height: "100vh", bgcolor: "#F5F5F5" }}>
+      <Box
+        sx={{
+          display: "flex",
+          height: "100vh",
+          bgcolor: "#F5F5F5",
+        }}
+      >
         <Sidebar />
         <Box
           component="main"

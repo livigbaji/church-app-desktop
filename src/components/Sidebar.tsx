@@ -44,7 +44,14 @@ const Sidebar = () => {
           },
         }}
       >
-        <List sx={{ pt: "100px" }}>
+        <List
+          sx={{
+            pt: "100px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           {navigationItems.map((item, index) => (
             <ListItem
               key={index}
@@ -64,6 +71,7 @@ const Sidebar = () => {
                 },
                 color: "#FFFFFF",
                 padding: "20px",
+                maxWidth: "203px",
               }}
             >
               <ListItemIcon sx={{ color: "#FFFFFF" }}>{item.icon}</ListItemIcon>
@@ -93,7 +101,6 @@ const Sidebar = () => {
           flexGrow: 1,
           p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          borderLeft: "1px solid #E6E8EC",
           zIndex: 1,
         }}
       >

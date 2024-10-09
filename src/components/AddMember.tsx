@@ -1,464 +1,434 @@
 import React, { useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Dayjs } from "dayjs";
 import {
   Box,
-  Button,
   TextField,
+  Button,
   Grid,
-  FormControl,
-  InputLabel,
   MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stepper,
-  Step,
-  StepLabel,
+  Typography,
 } from "@mui/material";
 import Header from "./Header";
 
-interface FormValues {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  maritalStatus: string;
-  gender: string;
-  homecell: string;
-  joinedUnitAt: Dayjs | null;
-  joinedCommissionAt: Dayjs | null;
-  newBirthAt: Dayjs | null;
-  baptizedAt: Dayjs | null;
-  occupation: string;
-  birthday: Dayjs | null;
-  birthMonth: string;
-  phoneNumber: string;
-  address: string;
-  reference: string;
-  qualification: string;
-  otherUnits: string;
-  hobbies: string;
-  nextOfKin: string;
-  nextOfKinNumber: string;
-  village: string;
-  hometown: string;
-  lga: string;
-  state: string;
-}
+const maritalStatusOptions = ["SINGLE", "MARRIED"];
+const genderOptions = ["MALE", "FEMALE"];
 
 const AddMember: React.FC = () => {
-  const [formValues, setFormValues] = useState<FormValues>({
+  const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",
     lastName: "",
     maritalStatus: "",
     gender: "",
-    homecell: "",
-    joinedUnitAt: null,
-    joinedCommissionAt: null,
-    newBirthAt: null,
-    baptizedAt: null,
+    homeCell: "",
+    joinedUnitAt: "",
+    joinedCommissionAt: "",
+    newBirthAt: "",
+    baptizedAt: "",
     occupation: "",
-    birthday: null,
+    birthDay: "",
     birthMonth: "",
     phoneNumber: "",
     address: "",
     reference: "",
     qualification: "",
-    otherUnits: "",
+    otherUnit: "",
     hobbies: "",
     nextOfKin: "",
     nextOfKinNumber: "",
     village: "",
-    hometown: "",
+    homeTown: "",
     lga: "",
     state: "",
   });
 
-  const [activeStep, setActiveStep] = useState(0);
-  const steps = ["Bio Data", "Contact", "Hobbies", "Reference and Other Info"];
-
-  const handleTextFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = event.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]:
+        name === "birthDay" || name === "birthMonth" ? Number(value) : value,
+    });
   };
 
-  const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const { name, value } = event.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
-  const handleDateChange = (name: keyof FormValues) => (date: Dayjs | null) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: date,
-    }));
-  };
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // Send form values to main process
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Send form values to the main process using IPC
     window.ipcRenderer
-      .invoke("create:member", formValues)
+      .invoke("create:member", formData) // Using formData instead of formValues
       .then((response) => {
         console.log("Member created:", response);
-        // Handle successful creation (e.g., show a success message, redirect, etc.)
+
+        console.log("Form data:", formData);
+        // Optionally reset the form after success
+        // setFormData({
+        //   firstName: "",
+        //   middleName: "",
+        //   lastName: "",
+        //   maritalStatus: "",
+        //   gender: "",
+        //   homeCell: "",
+        //   joinedUnitAt: "",
+        //   joinedCommissionAt: "",
+        //   newBirthAt: "",
+        //   baptizedAt: "",
+        //   occupation: "",
+        //   birthDay: "",
+        //   birthMonth: "",
+        //   phoneNumber: "",
+        //   address: "",
+        //   reference: "",
+        //   qualification: "",
+        //   otherUnit: "",
+        //   hobbies: "",
+        //   nextOfKin: "",
+        //   nextOfKinNumber: "",
+        //   village: "",
+        //   homeTown: "",
+        //   lga: "",
+        //   state: "",
+        // });
+        // Optionally handle a success message or redirect
       })
       .catch((error) => {
         console.error("Error creating member:", error);
-        // Handle error
+        // Handle error case, e.g., show an error message
       });
   };
 
   return (
-    <div className="container">
-      <Header pageTitle="Add New Member" />
-      <Box sx={{ padding: 3 }}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <form onSubmit={handleSubmit}>
-          {activeStep === 0 && (
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  fullWidth
-                  label="First Name"
-                  name="firstName"
-                  value={formValues.firstName}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Middle Name"
-                  name="middleName"
-                  value={formValues.middleName}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Last Name"
-                  name="lastName"
-                  value={formValues.lastName}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl required fullWidth>
-                  <InputLabel>Marital Status</InputLabel>
-                  <Select
-                    name="maritalStatus"
-                    value={formValues.maritalStatus}
-                    onChange={handleSelectChange}
-                  >
-                    <MenuItem value="Single">Single</MenuItem>
-                    <MenuItem value="Married">Married</MenuItem>
-                    <MenuItem value="Divorced">Divorced</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl required fullWidth>
-                  <InputLabel>Gender</InputLabel>
-                  <Select
-                    name="gender"
-                    value={formValues.gender}
-                    onChange={handleSelectChange}
-                  >
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Homecell"
-                  name="homecell"
-                  value={formValues.homecell}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Joined Unit at"
-                    value={formValues.joinedUnitAt}
-                    onChange={handleDateChange("joinedUnitAt")}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-            </Grid>
-          )}
+    <Box>
+      <Header pageTitle="Add Member" />
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          {/* First Name */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="First Name"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </Grid>
 
-          {activeStep === 1 && (
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Joined Commission at"
-                    value={formValues.joinedCommissionAt}
-                    onChange={handleDateChange("joinedCommissionAt")}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="New Birth at"
-                    value={formValues.newBirthAt}
-                    onChange={handleDateChange("newBirthAt")}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Baptized at"
-                    value={formValues.baptizedAt}
-                    onChange={handleDateChange("baptizedAt")}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Occupation"
-                  name="occupation"
-                  value={formValues.occupation}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl required fullWidth>
-                  <InputLabel>Birth Month</InputLabel>
-                  <Select
-                    name="birthMonth"
-                    value={formValues.birthMonth}
-                    onChange={handleSelectChange}
-                  >
-                    <MenuItem value="January">January</MenuItem>
-                    <MenuItem value="February">February</MenuItem>
-                    <MenuItem value="March">March</MenuItem>
-                    <MenuItem value="April">April</MenuItem>
-                    <MenuItem value="May">May</MenuItem>
-                    <MenuItem value="June">June</MenuItem>
-                    <MenuItem value="July">July</MenuItem>
-                    <MenuItem value="August">August</MenuItem>
-                    <MenuItem value="September">September</MenuItem>
-                    <MenuItem value="October">October</MenuItem>
-                    <MenuItem value="November">November</MenuItem>
-                    <MenuItem value="December">December</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Birthday"
-                    views={["year", "month", "day"]}
-                    value={formValues.birthday}
-                    onChange={handleDateChange("birthday")}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phoneNumber"
-                  value={formValues.phoneNumber}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Address"
-                  name="address"
-                  value={formValues.address}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-            </Grid>
-          )}
+          {/* Middle Name (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Middle Name"
+              name="middleName"
+              value={formData.middleName}
+              onChange={handleChange}
+            />
+          </Grid>
 
-          {activeStep === 2 && (
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Hobbies"
-                  name="hobbies"
-                  value={formValues.hobbies}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Other units?"
-                  name="otherUnits"
-                  value={formValues.otherUnits}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-            </Grid>
-          )}
+          {/* Last Name */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Last Name"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+          </Grid>
 
-          {activeStep === 3 && (
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Reference"
-                  name="reference"
-                  value={formValues.reference}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Qualification"
-                  name="qualification"
-                  value={formValues.qualification}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Next of Kin"
-                  name="nextOfKin"
-                  value={formValues.nextOfKin}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Next of Kin Number"
-                  name="nextOfKinNumber"
-                  value={formValues.nextOfKinNumber}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Village"
-                  name="village"
-                  value={formValues.village}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Hometown"
-                  name="hometown"
-                  value={formValues.hometown}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="LGA"
-                  name="lga"
-                  value={formValues.lga}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="State"
-                  name="state"
-                  value={formValues.state}
-                  onChange={handleTextFieldChange}
-                />
-              </Grid>
-            </Grid>
-          )}
-
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
+          {/* Marital Status */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              select
+              label="Marital Status"
+              name="maritalStatus"
+              value={formData.maritalStatus}
+              onChange={handleChange}
             >
-              Back
+              {maritalStatusOptions.map((status) => (
+                <MenuItem key={status} value={status}>
+                  {status}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          {/* Gender */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              select
+              label="Gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+            >
+              {genderOptions.map((gender) => (
+                <MenuItem key={gender} value={gender}>
+                  {gender}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          {/* Home Cell (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Home Cell"
+              name="homeCell"
+              value={formData.homeCell}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Joined Unit At */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              type="date"
+              label="Joined Unit At"
+              name="joinedUnitAt"
+              value={formData.joinedUnitAt}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+
+          {/* Joined Commission At */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              type="date"
+              label="Joined Commission At"
+              name="joinedCommissionAt"
+              value={formData.joinedCommissionAt}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+
+          {/* New Birth At (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="New Birth At"
+              name="newBirthAt"
+              value={formData.newBirthAt}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+
+          {/* Baptized At (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Baptized At"
+              name="baptizedAt"
+              value={formData.baptizedAt}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+
+          {/* Occupation */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Occupation"
+              name="occupation"
+              value={formData.occupation}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Birth Day */}
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              required
+              type="number"
+              label="Birth Day"
+              name="birthDay"
+              value={formData.birthDay}
+              onChange={handleChange}
+              InputProps={{ inputProps: { min: 1, max: 31 } }}
+            />
+          </Grid>
+
+          {/* Birth Month */}
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              required
+              type="number"
+              label="Birth Month"
+              name="birthMonth"
+              value={formData.birthMonth}
+              onChange={handleChange}
+              InputProps={{ inputProps: { min: 1, max: 12 } }}
+            />
+          </Grid>
+
+          {/* Phone Number */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Phone Number"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Address */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Address"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Reference (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Reference"
+              name="reference"
+              value={formData.reference}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Qualification */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Qualification"
+              name="qualification"
+              value={formData.qualification}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Other Unit (Optional) */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Other Unit"
+              name="otherUnit"
+              value={formData.otherUnit}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Hobbies */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Hobbies"
+              name="hobbies"
+              value={formData.hobbies}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Next of Kin */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Next of Kin"
+              name="nextOfKin"
+              value={formData.nextOfKin}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Next of Kin Number */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Next of Kin Phone Number"
+              name="nextOfKinNumber"
+              value={formData.nextOfKinNumber}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Village */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Village"
+              name="village"
+              value={formData.village}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Home Town */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="Home Town"
+              name="homeTown"
+              value={formData.homeTown}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* LGA */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="LGA"
+              name="lga"
+              value={formData.lga}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* State */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              required
+              label="State"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          {/* Submit Button */}
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Submit
             </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            {activeStep === steps.length - 1 ? (
-              <Button type="submit" variant="contained" color="primary">
-                Submit
-              </Button>
-            ) : (
-              <Button onClick={handleNext} variant="contained" color="primary">
-                Next
-              </Button>
-            )}
-          </Box>
-        </form>
-      </Box>
-    </div>
+          </Grid>
+        </Grid>
+      </form>
+    </Box>
   );
 };
 

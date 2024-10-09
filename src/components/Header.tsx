@@ -28,7 +28,10 @@ const Header: React.FC<HeaderProps> = ({ pageTitle }) => {
       </div>
 
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="body1" color="initial" sx={{ mr: 1 }}>
+        <Typography
+          color="#000000"
+          sx={{ mr: 1, font: "Inter", fontWeight: 700, fontSize: "16px" }}
+        >
           Admin
         </Typography>
         <AdminPanelSettingsIcon />

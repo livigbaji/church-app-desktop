@@ -26,6 +26,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
     "@mui/x-date-pickers": "^7.11.0",
@@ -36,13 +37,16 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "electron-updater": "^6.1.8",
+    "formik": "^2.4.6",
     "knex": "^3.1.0",
     "objection": "^3.1.4",
     "react": "^17.0.0 || ^18.0.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^17.0.0 || ^18.0.0",
+    "react-hook-form": "^7.53.0",
     "react-router-dom": "^6.24.1",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",

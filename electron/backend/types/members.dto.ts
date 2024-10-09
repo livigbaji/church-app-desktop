@@ -53,7 +53,7 @@ export class CreateMemberRequest {
   lastName!: string;
 
   @IsString()
-  @IsEnum(MemberStatus)
+  @IsEnum(MaritalStatus)
   @IsNotEmpty()
   maritalStatus!: MaritalStatus;
 

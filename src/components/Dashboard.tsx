@@ -5,6 +5,7 @@ import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
 import TableViewOutlinedIcon from "@mui/icons-material/TableViewOutlined";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
+import CustomSpeedDial from "./CustomSpeedDial";
 
 // Function to fetch total members
 const getTotalMembers = async (search: string) => {
@@ -20,6 +21,28 @@ const getTotalUnits = async (search: string) => {
 const getUpcomingBirthdays = async (search: string) => {
   return window.ipcRenderer.invoke("birthdays:member", { search });
 };
+
+// const doStuff = (name: string) => {
+//   if (!name || typeof name !== "string" || name.trim() === "") {
+//     console.error("Invalid name provided.");
+//     return;
+//   }
+
+//   window.ipcRenderer
+//     .invoke("doStuff", { name })
+//     .then((response) => {
+//       if (response.success) {
+//         console.log("Stuff:", response);
+//       } else {
+//         console.error("Error:", response.error);
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Error invoking doStuff:", error);
+//     });
+// };
+
+// doStuff("John Doe");
 
 // Reusable StatCard Component
 interface StatCardProps {
@@ -88,14 +111,18 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  console.log("total members:", totalMembers);
+  console.log("total units:", totalUnits);
+  console.log("Upcoming birthdays", upcomingBirthdays);
+
   return (
     <Box>
       <Header pageTitle={"Dashboard"} />
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)", // specify 4 columns with equal width
+          gap: 3,
         }}
       >
         <StatCard
@@ -112,8 +139,7 @@ const Dashboard: React.FC = () => {
           count={0}
           title="ABSENT LAST WEEK"
           Icon={HighlightOffOutlinedIcon}
-        />{" "}
-        {/* Placeholder for absent count */}
+        />
         <StatCard
           count={upcomingBirthdays}
           title="UPCOMING BIRTHDAYS"
@@ -123,6 +149,9 @@ const Dashboard: React.FC = () => {
 
       {/* Charts component */}
       <Box>Charts</Box>
+
+      {/* SpeedDial component */}
+      <CustomSpeedDial actions={[]} />
     </Box>
   );
 };
