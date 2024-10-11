@@ -34,13 +34,19 @@ export class MemberService {
 
   @Handler("get:members")
   listMembers(@Validate(ListMembersRequest) request: ListMembersRequest) {
-    return Member.query()
-      .whereILike("firstName", `%${request.search}%`)
-      .orWhereILike("middleName", `%${request.search}%`)
-      .orWhereILike("lastName", `%${request.search}%`)
-      .orderBy("firstName")
-      .limit(request.limit || 500)
-      .offset(request.offset || 0);
+    const query = Member.query();
+    console.log(request);
+    if (request && request.search) {
+      query
+        .whereILike("first_name", `%${request.search}%`)
+        .orWhereILike("middle_name", `%${request.search}%`)
+        .orWhereILike("last)name", `%${request.search}%`);
+    }
+
+    return query
+      .orderBy("first_name")
+      .limit(request?.limit || 500)
+      .offset(request?.offset || 0);
   }
 
   @Handler("get:external-members")
@@ -131,9 +137,9 @@ export class MemberService {
   birthdays(month: number) {
     return Member.query()
       .where({
-        birthMonth: month,
-        status: MemberStatus.ACTIVE,
+        birth_month: month,
+        // status: MemberStatus.ACTIVE,
       })
-      .orderBy("birthDate");
+      .orderBy("birth_day");
   }
 }

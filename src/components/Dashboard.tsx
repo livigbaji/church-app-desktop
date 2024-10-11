@@ -8,8 +8,12 @@ import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import CustomSpeedDial from "./CustomSpeedDial";
 
 // Function to fetch total members
-const getTotalMembers = async (search: string) => {
-  return window.ipcRenderer.invoke("get:members", { search });
+const getTotalMembers = async () => {
+  const { status, data: members } = await window.ipcRenderer.invoke(
+    "get:members"
+  );
+  // do somethign with status;
+  return members;
 };
 
 // Function to fetch total units
@@ -18,8 +22,12 @@ const getTotalUnits = async (search: string) => {
 };
 
 // Function to fetch upcoming birthdays
-const getUpcomingBirthdays = async (search: string) => {
-  return window.ipcRenderer.invoke("birthdays:member", { search });
+const getUpcomingBirthdays = async (month: number) => {
+  const { data: birthdays } = await window.ipcRenderer.invoke(
+    "birthdays:member",
+    month
+  );
+  return birthdays;
 };
 
 // const doStuff = (name: string) => {
@@ -96,10 +104,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const members = await getTotalMembers("");
+        const members = await getTotalMembers();
         const units = await getTotalUnits("");
-        const birthdays = await getUpcomingBirthdays("");
-
+        const birthdays = await getUpcomingBirthdays(10);
+        console.log(members);
         setTotalMembers(members.length);
         setTotalUnits(units.length);
         setUpcomingBirthdays(birthdays.length);
@@ -131,7 +139,7 @@ const Dashboard: React.FC = () => {
           Icon={Groups2OutlinedIcon}
         />
         <StatCard
-          count={totalUnits}
+          count={totalUnits || 0}
           title="TOTAL SUB-UNITS"
           Icon={TableViewOutlinedIcon}
         />
@@ -141,7 +149,7 @@ const Dashboard: React.FC = () => {
           Icon={HighlightOffOutlinedIcon}
         />
         <StatCard
-          count={upcomingBirthdays}
+          count={upcomingBirthdays || 0}
           title="UPCOMING BIRTHDAYS"
           Icon={CakeOutlinedIcon}
         />
