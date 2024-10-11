@@ -33,7 +33,7 @@ const AddMember: React.FC = () => {
     qualification: "",
     otherUnit: "",
     hobbies: "",
-    nextOfKin: "",
+    nextOfKinName: "",
     nextOfKinNumber: "",
     village: "",
     homeTown: "",
@@ -354,8 +354,8 @@ const AddMember: React.FC = () => {
               fullWidth
               required
               label="Next of Kin"
-              name="nextOfKin"
-              value={formData.nextOfKin}
+              name="nextOfKinName"
+              value={formData.nextOfKinName}
               onChange={handleChange}
             />
           </Grid>

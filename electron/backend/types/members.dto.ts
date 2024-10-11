@@ -122,7 +122,7 @@ export class CreateMemberRequest {
 
   @IsNotEmpty()
   @IsString()
-  nextOfKin!: string;
+  nextOfKinName!: string;
 
   @IsNotEmpty()
   @IsPhoneNumber("NG")

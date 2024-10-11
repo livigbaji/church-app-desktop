@@ -80,9 +80,11 @@ const Sidebar = () => {
           ))}
         </List>
         <Button
+          onClick={() => console.log("Logged out")}
           variant="text"
           color="error"
           startIcon={<LogoutOutlinedIcon />}
+          fullWidth
           sx={{
             mt: "auto",
             mb: 2,
