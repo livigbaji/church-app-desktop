@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -20,35 +20,48 @@ import {
   Checkbox,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Header from "./Header";
 import CustomSpeedDial from "./CustomSpeedDial";
-
-const rows = [
-  { id: 1, name: "Trust Adekoye", phone: "09038476802", subunit: "Video" },
-  { id: 2, name: "Trust Adekoye", phone: "09038476802", subunit: "Audio" },
-  { id: 3, name: "Trust Adekoye", phone: "09038476802", subunit: "Admin" },
-  { id: 4, name: "Trust Adekoye", phone: "09038476802", subunit: "Sound" },
-  { id: 5, name: "Trust Adekoye", phone: "09038476802", subunit: "Video" },
-  { id: 6, name: "Trust Adekoye", phone: "09038476802", subunit: "Audio" },
-];
+import { getAllMembers, MemberData } from "../services/memberService";
+import CsvUpload from "@/components/CsvUpload";
 
 const Members: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState("");
-  const [filteredRows, setFilteredRows] = useState(rows);
-  const [selected, setSelected] = useState<number[]>([]);
+  const [filteredRows, setFilteredRows] = useState<MemberData[]>([]);
+  const [selected] = useState<number[]>([]);
+
+  const handleFileSelected = (file: File) => {
+    console.log("File uploaded:", file);
+    // Handle the file upload logic here
+    // You can implement your CSV parsing logic or further processing here
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const members = await getAllMembers();
+
+        // Set members data to filteredRows
+        setFilteredRows(members);
+      } catch (error) {
+        console.error("Failed to fetch members:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -59,58 +72,14 @@ const Members: React.FC = () => {
     setFilter(value);
     if (value) {
       setFilteredRows(
-        rows.filter((row) => row.subunit.toLowerCase() === value.toLowerCase())
+        filteredRows.filter(
+          (row) => row.otherUnit?.toLowerCase() === value.toLowerCase(),
+        ),
       );
     } else {
-      setFilteredRows(rows);
+      setFilteredRows(filteredRows);
     }
     setPage(0);
-  };
-
-  const handleUploadClick = () => {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".csv, .xls, .xlsx";
-    fileInput.onchange = (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        console.log("Selected file:", file);
-        // Handle the file upload logic here
-      }
-    };
-    fileInput.click();
-  };
-
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = filteredRows.map((row) => row.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleCheckboxClick = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    id: number
-  ) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
   };
 
   return (
@@ -145,25 +114,7 @@ const Members: React.FC = () => {
             </FormControl>
           </Grid>
           <Grid item>
-            <Button
-              variant="outlined"
-              startIcon={<UploadFileIcon sx={{ color: "#132034" }} />}
-              sx={{
-                marginRight: 2,
-                backgroundColor: "#fff",
-                borderColor: "#525252",
-                color: "#132034",
-                "&:hover": {
-                  backgroundColor: "#f0f0f0",
-                  borderColor: "#525252",
-                },
-                height: 56,
-                minWidth: 180,
-              }}
-              onClick={handleUploadClick}
-            >
-              Upload CSV
-            </Button>
+            <CsvUpload onFileSelected={handleFileSelected} />{" "}
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -193,13 +144,6 @@ const Members: React.FC = () => {
                       filteredRows.length > 0 &&
                       selected.length === filteredRows.length
                     }
-                    onChange={handleSelectAllClick}
-                    sx={{
-                      color: "#132034",
-                      "&.Mui-checked": {
-                        color: "#132034",
-                      },
-                    }}
                   />
                 </TableCell>
                 <TableCell>S/N</TableCell>
@@ -212,24 +156,17 @@ const Members: React.FC = () => {
             <TableBody>
               {filteredRows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow key={row.id}>
+                .map((row, index) => (
+                  <TableRow key={index}>
                     <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={selected.indexOf(row.id) !== -1}
-                        onChange={(event) => handleCheckboxClick(event, row.id)}
-                        sx={{
-                          color: "#132034",
-                          "&.Mui-checked": {
-                            color: "#132034",
-                          },
-                        }}
-                      />
+                      <Checkbox checked={selected.indexOf(index) !== -1} />
                     </TableCell>
-                    <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.phone}</TableCell>
-                    <TableCell>{row.subunit}</TableCell>
+                    <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                    <TableCell>
+                      {`${row.firstName} ${row.middleName || ""} ${row.lastName}`}
+                    </TableCell>
+                    <TableCell>{row.phoneNumber}</TableCell>
+                    <TableCell>{row.otherUnit || "N/A"}</TableCell>
                     <TableCell>
                       <IconButton>
                         <AddCircleIcon color="success" />

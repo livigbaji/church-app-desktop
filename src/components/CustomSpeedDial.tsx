@@ -8,10 +8,8 @@ interface CustomSpeedDialProps {
   actions: { icon: React.ReactNode; tooltipTitle: string }[];
 }
 
-const CustomSpeedDial: React.FC<CustomSpeedDialProps> = ({
-  iconColor,
-  actions,
-}) => {
+// eslint-disable-next-line no-empty-pattern
+const CustomSpeedDial: React.FC<CustomSpeedDialProps> = ({}) => {
   const navigate = useNavigate(); // Initialize the navigate function
 
   const handleAddMemberClick = () => {

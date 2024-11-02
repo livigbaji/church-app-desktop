@@ -8,6 +8,8 @@ export class Member extends Model {
     return MEMBERS_TABLE;
   }
 
+  static useSnakeCase = true;
+
   static get columnNameMappers() {
     return snakeCaseMappers();
   }
