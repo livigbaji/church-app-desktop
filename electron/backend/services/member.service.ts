@@ -9,7 +9,6 @@ import {
   CreateMemberRequest,
   CreateExternalMemberRequest,
 } from "../types";
-import knex from "knex";
 
 export class MemberService {
   @Handler("doStuff")
@@ -35,31 +34,32 @@ export class MemberService {
   @Handler("get:members")
   listMembers(@Validate(ListMembersRequest) request: ListMembersRequest) {
     const query = Member.query();
-    console.log(request);
-    if (request && request.search) {
-      query
-        .whereILike("first_name", `%${request.search}%`)
-        .orWhereILike("middle_name", `%${request.search}%`)
-        .orWhereILike("last)name", `%${request.search}%`);
+    if(request && request.search) {
+      query.whereILike("first_name", `%${request.search}%`)
+          .orWhereILike("middle_name", `%${request.search}%`)
+          .orWhereILike("last_name", `%${request.search}%`);
     }
 
-    return query
-      .orderBy("first_name")
-      .limit(request?.limit || 500)
-      .offset(request?.offset || 0);
+      return query.orderBy("first_name")
+              .limit(request?.limit || 500)
+              .offset(request?.offset || 0);
   }
 
   @Handler("get:external-members")
   listExternalMembers(
     @Validate(ListMembersRequest) request: ListMembersRequest
   ) {
-    return ExternalMembers.query()
-      .whereILike("firstName", `%${request.search}%`)
-      .orWhereILike("middleName", `%${request.search}%`)
-      .orWhereILike("lastName", `%${request.search}%`)
-      .orderBy("firstName")
-      .limit(request.limit || 500)
-      .offset(request.offset || 0);
+    const query =  ExternalMembers.query();
+
+    if(request && request.search) {
+        query.whereILike("first_name", `%${request.search}%`)
+            .orWhereILike("middle_name", `%${request.search}%`)
+            .orWhereILike("last_name", `%${request.search}%`);
+    }
+
+      return query.orderBy("first_name")
+      .limit(request?.limit || 500)
+      .offset(request?.offset || 0);
   }
 
   @Handler("create:member")
@@ -138,7 +138,7 @@ export class MemberService {
     return Member.query()
       .where({
         birth_month: month,
-        // status: MemberStatus.ACTIVE,
+        status: MemberStatus.ACTIVE,
       })
       .orderBy("birth_day");
   }
