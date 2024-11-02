@@ -1,3 +1,4 @@
+import CustomSpeedDial from "./CustomSpeedDial";
 import Header from "./Header";
 
 const Profiles: React.FC = () => {
@@ -12,6 +13,8 @@ const Profiles: React.FC = () => {
         nesciunt aut eligendi dolores ducimus sint sed qui facere quia
         voluptates quaerat.
       </p>
+
+      <CustomSpeedDial actions={[]} />
     </div>
   );
 };

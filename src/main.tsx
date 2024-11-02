@@ -8,9 +8,11 @@ import "./index.css";
 // import './demos/node'
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+  <div>
+    {/* <React.StrictMode> */}
     <App />
-  </React.StrictMode>
+    {/* </React.StrictMode> */}
+  </div>
 );
 
 postMessage({ payload: "removeLoading" }, "*");

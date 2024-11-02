@@ -1,3 +1,4 @@
+import CustomSpeedDial from "./CustomSpeedDial";
 import Header from "./Header";
 
 const SubUnit: React.FC = () => {
@@ -12,6 +13,8 @@ const SubUnit: React.FC = () => {
         aspernatur, expedita minus nihil accusantium. Incidunt cupiditate quam
         voluptatum aperiam harum? Ea!
       </p>
+
+      <CustomSpeedDial actions={[]} />
     </div>
   );
 };
