@@ -19,7 +19,7 @@ const getTotalUnits = async (search: string) => {
 
 // Function to fetch upcoming birthdays
 const getUpcomingBirthdays = async (search: string) => {
-  return window.ipcRenderer.invoke("birthdays:member", { search });
+  return window.ipcRenderer.invoke("birthdays:member", search);
 };
 
 // const doStuff = (name: string) => {
