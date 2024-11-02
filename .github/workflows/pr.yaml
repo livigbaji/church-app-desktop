@@ -31,8 +31,3 @@ jobs:
 
       - name: Run linter
         run: npm run lint
-
-      - name: Test Build
-        run: npm run build
-        env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}

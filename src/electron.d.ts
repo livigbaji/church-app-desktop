@@ -1,5 +1,5 @@
 export interface ElectronAPI {
-  invoke: (channel: string, ...args: any[]) => Promise<any>;
+  invoke: (channel: string, ...args: unknown[]) => Promise<unknown>;
   // Add other methods you might use
 }
 

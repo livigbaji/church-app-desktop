@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
@@ -7,17 +7,29 @@ import Attendance from "./components/Attendance";
 import Members from "./components/Members";
 import SubUnit from "./components/SubUnit";
 import Profiles from "./components/Profiles";
-import Birthdays from "./components/Birthdays"; // Import the Birthdays component
-import AddMember from "./components/AddMember";
+import Birthdays from "./components/Birthdays";
+import CreateMember from "./components/forms/CreateMember";
+import CreateUnits from "@/components/forms/CreateUnits";
 
 const App: React.FC = () => {
+  const routes = [
+    { path: "/", element: <Dashboard /> },
+    { path: "/attendance", element: <Attendance /> },
+    { path: "/members", element: <Members /> },
+    { path: "/members/birthdays", element: <Birthdays /> },
+    { path: "/members/newmember", element: <CreateMember /> },
+    { path: "/subunits", element: <SubUnit /> },
+    { path: "/subunits/add-unit", element: <CreateUnits /> },
+    { path: "/profiles", element: <Profiles /> },
+  ];
+
   return (
     <Router>
       <Box
         sx={{
           display: "flex",
           height: "100vh",
-          bgcolor: "#F5F5F5",
+          bgColor: "#F5F5F5",
         }}
       >
         <Sidebar />
@@ -30,13 +42,9 @@ const App: React.FC = () => {
           }}
         >
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/attendance" element={<Attendance />} />
-            <Route path="/members" element={<Members />} />
-            <Route path="/members/birthdays" element={<Birthdays />} />
-            <Route path="/members/newmember" element={<AddMember />} />
-            <Route path="/subunits" element={<SubUnit />} />
-            <Route path="/profiles" element={<Profiles />} />
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            ))}
           </Routes>
         </Box>
       </Box>

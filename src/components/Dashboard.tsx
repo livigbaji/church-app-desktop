@@ -1,3 +1,4 @@
+// Dashboard.tsx
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
@@ -6,45 +7,9 @@ import TableViewOutlinedIcon from "@mui/icons-material/TableViewOutlined";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import CustomSpeedDial from "./CustomSpeedDial";
+import { getAllMembers } from "@/services/memberService";
+import { getTotalUnits, getUpcomingBirthdays } from "@/services/unitService";
 
-// Function to fetch total members
-const getTotalMembers = async (search: string) => {
-  return window.backend.invoke("get:members", { search });
-};
-
-// Function to fetch total units
-const getTotalUnits = async (search: string) => {
-  return window.backend.invoke("get:units", { search });
-};
-
-// Function to fetch upcoming birthdays
-const getUpcomingBirthdays = async (search: string) => {
-  return window.backend.invoke("birthdays:member", search);
-};
-
-// const doStuff = (name: string) => {
-//   if (!name || typeof name !== "string" || name.trim() === "") {
-//     console.error("Invalid name provided.");
-//     return;
-//   }
-
-//   window.ipcRenderer
-//     .invoke("doStuff", { name })
-//     .then((response) => {
-//       if (response.success) {
-//         console.log("Stuff:", response);
-//       } else {
-//         console.error("Error:", response.error);
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Error invoking doStuff:", error);
-//     });
-// };
-
-// doStuff("John Doe");
-
-// Reusable StatCard Component
 interface StatCardProps {
   count: number;
   title: string;
@@ -96,9 +61,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const members = await getTotalMembers("");
+        const members = await getAllMembers();
         const units = await getTotalUnits("");
-        const birthdays = await getUpcomingBirthdays("");
+        const birthdays = await getUpcomingBirthdays(10);
 
         setTotalMembers(members.length);
         setTotalUnits(units.length);
@@ -111,17 +76,13 @@ const Dashboard: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log("total members:", totalMembers);
-  console.log("total units:", totalUnits);
-  console.log("Upcoming birthdays", upcomingBirthdays);
-
   return (
     <Box>
       <Header pageTitle={"Dashboard"} />
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)", // specify 4 columns with equal width
+          gridTemplateColumns: "repeat(4, 1fr)",
           gap: 3,
         }}
       >
@@ -131,7 +92,7 @@ const Dashboard: React.FC = () => {
           Icon={Groups2OutlinedIcon}
         />
         <StatCard
-          count={totalUnits}
+          count={totalUnits || 0}
           title="TOTAL SUB-UNITS"
           Icon={TableViewOutlinedIcon}
         />
@@ -141,16 +102,13 @@ const Dashboard: React.FC = () => {
           Icon={HighlightOffOutlinedIcon}
         />
         <StatCard
-          count={upcomingBirthdays}
+          count={upcomingBirthdays || 0}
           title="UPCOMING BIRTHDAYS"
           Icon={CakeOutlinedIcon}
         />
       </Box>
 
-      {/* Charts component */}
       <Box>Charts</Box>
-
-      {/* SpeedDial component */}
       <CustomSpeedDial actions={[]} />
     </Box>
   );

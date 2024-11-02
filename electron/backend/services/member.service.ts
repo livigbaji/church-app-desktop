@@ -9,7 +9,6 @@ import {
   CreateMemberRequest,
   CreateExternalMemberRequest,
 } from "../types";
-import knex from "knex";
 
 export class MemberService {
   @Handler("doStuff")
@@ -41,9 +40,9 @@ export class MemberService {
           .orWhereILike("last_name", `%${request.search}%`);
     }
 
-    return query.orderBy("first_name")
-        .limit(request?.limit || 500)
-        .offset(request?.offset || 0);
+      return query.orderBy("first_name")
+              .limit(request?.limit || 500)
+              .offset(request?.offset || 0);
   }
 
   @Handler("get:external-members")
@@ -53,14 +52,14 @@ export class MemberService {
     const query =  ExternalMembers.query();
 
     if(request && request.search) {
-      query.whereILike("first_name", `%${request.search}%`)
-          .orWhereILike("middle_name", `%${request.search}%`)
-          .orWhereILike("last_name", `%${request.search}%`);
+        query.whereILike("first_name", `%${request.search}%`)
+            .orWhereILike("middle_name", `%${request.search}%`)
+            .orWhereILike("last_name", `%${request.search}%`);
     }
 
-    return query.orderBy("first_name")
-        .limit(request?.limit || 500)
-        .offset(request?.offset || 0);
+      return query.orderBy("first_name")
+      .limit(request?.limit || 500)
+      .offset(request?.offset || 0);
   }
 
   @Handler("create:member")
