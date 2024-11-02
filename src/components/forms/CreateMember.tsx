@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Grid, MenuItem } from "@mui/material";
 import Header from "../Header";
-import { createMember, MemberData } from "@/services/createMemberService";
+import { createMember, MemberData } from "@/services/memberService";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 

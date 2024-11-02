@@ -26,16 +26,24 @@ export interface MemberData {
   state: string;
 }
 
-export const createMember = async (memberData: MemberData): Promise<any> => {
+export const createMember = async (
+  memberData: MemberData,
+): Promise<MemberData> => {
   try {
     const response = await window.ipcRenderer.invoke(
       "create:member",
       memberData,
     );
     console.log("Member created:", response);
-    return response; // You could return data for further processing if needed
+    return response; // Now, this function promises to return a MemberData object
   } catch (error) {
     console.error("Error creating member:", error);
     throw error;
   }
+};
+
+export const getAllMembers = async (): Promise<MemberData[]> => {
+  const { data: members } = await window.ipcRenderer.invoke("get:members");
+
+  return members;
 };
