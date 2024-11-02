@@ -2,7 +2,7 @@ import {Member} from "../models/member.model";
 import {ExternalMembers} from "../models/external-member.model";
 import {Handler, OnSuccess, Validate} from "../handler";
 import {TestStuff, ExternalMemberLabel, ListMembersRequest, MemberStatus, CreateMemberRequest, CreateExternalMemberRequest} from "../types";
-import knex from "knex";
+import { SpreadsheetService } from "./spreadsheet.service";
 
 export class MemberService {
     @Handler('doStuff')
@@ -56,6 +56,13 @@ export class MemberService {
             ...member,
             deleted: false,
         });
+    }
+
+    @Handler('upload:excel')
+    async uploadExcel(path: string){
+        const exists =  await SpreadsheetService.readWorkbook(path);
+
+        return { stuff: 'stuff', exists };
     }
 
     @Handler('update:member')

@@ -67,12 +67,14 @@ const Members: React.FC = () => {
   const handleUploadClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".csv";
-    fileInput.onchange = (event) => {
+    fileInput.accept = ".xlsx,.csv";
+    fileInput.onchange = async (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
       if (file) {
         console.log("Selected file:", file);
         // Handle the file upload logic here
+        const response = await window.backend.invoke('upload:excel', file.path);
+        console.log("Response:", response);
       }
     };
     fileInput.click();

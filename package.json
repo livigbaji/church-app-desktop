@@ -34,15 +34,18 @@
     "date-fns": "^3.6.0",
     "electron-updater": "^6.1.8",
     "knex": "^3.1.0",
+    "lodash": "^4.17.21",
     "objection": "^3.1.4",
     "react": "^17.0.0 || ^18.0.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^17.0.0 || ^18.0.0",
     "react-router-dom": "^6.24.0",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",
+    "@types/lodash": "^4.17.6",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
