@@ -9,17 +9,17 @@ import CustomSpeedDial from "./CustomSpeedDial";
 
 // Function to fetch total members
 const getTotalMembers = async (search: string) => {
-  return window.ipcRenderer.invoke("get:members", { search });
+  return window.backend.invoke("get:members", { search });
 };
 
 // Function to fetch total units
 const getTotalUnits = async (search: string) => {
-  return window.ipcRenderer.invoke("get:units", { search });
+  return window.backend.invoke("get:units", { search });
 };
 
 // Function to fetch upcoming birthdays
 const getUpcomingBirthdays = async (search: string) => {
-  return window.ipcRenderer.invoke("birthdays:member", { search });
+  return window.backend.invoke("birthdays:member", search);
 };
 
 // const doStuff = (name: string) => {

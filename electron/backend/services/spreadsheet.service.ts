@@ -8,7 +8,7 @@ export class SpreadsheetService {
         return Object.entries(excel.Sheets).map(([sheetName, sheet]) => {
             return {
                 sheetName,
-                sheet: _.omitBy(sheet, (k) => k.startsWith('!')),
+                sheet: _.omitBy(sheet, (k: string) => k.startsWith('!')),
             }
         });
     }
