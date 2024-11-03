@@ -1,5 +1,5 @@
 import {
-  IsDate,
+  IsArray,
   IsDateString,
   IsEnum,
   IsInt,
@@ -8,13 +8,12 @@ import {
   IsPhoneNumber,
   IsPositive,
   IsString,
-  Max,
+  Max, ValidateNested,
 } from "class-validator";
 import {
   ExternalMemberLabel,
   Gender,
   MaritalStatus,
-  MemberStatus,
 } from "./common.type";
 
 export class TestStuff {
@@ -166,4 +165,14 @@ export class CreateExternalMemberRequest {
   @IsString()
   @IsEnum(ExternalMemberLabel)
   label!: ExternalMemberLabel;
+}
+
+
+export class MembersUpload {
+  @IsNotEmpty()
+  @IsArray()
+  @ValidateNested({
+    each: true,
+  })
+  members!: CreateMemberRequest[];
 }
