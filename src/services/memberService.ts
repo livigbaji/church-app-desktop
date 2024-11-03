@@ -30,7 +30,7 @@ export const createMember = async (
   memberData: MemberData,
 ): Promise<MemberData> => {
   try {
-    const response = await window.ipcRenderer.invoke(
+    const response = await window.backend.invoke(
       "create:member",
       memberData,
     );
@@ -43,7 +43,7 @@ export const createMember = async (
 };
 
 export const getAllMembers = async (): Promise<MemberData[]> => {
-  const { data: members } = await window.ipcRenderer.invoke("get:members");
+  const { data: members } = await window.backend.invoke("get:members");
 
   return members;
 };

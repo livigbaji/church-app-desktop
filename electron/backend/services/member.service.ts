@@ -7,8 +7,11 @@ import {
   ListMembersRequest,
   MemberStatus,
   CreateMemberRequest,
-  CreateExternalMemberRequest,
+  CreateExternalMemberRequest, MembersUpload,
 } from "../types";
+import {SpreadsheetService} from "./spreadsheet.service";
+import {validateOrReject} from "class-validator";
+import {plainToInstance} from "class-transformer";
 
 export class MemberService {
   @Handler("doStuff")
@@ -41,7 +44,7 @@ export class MemberService {
     }
 
       return query.orderBy("first_name")
-              .limit(request?.limit || 500)
+              .limit(request?.limit || 2000)
               .offset(request?.offset || 0);
   }
 
@@ -58,7 +61,7 @@ export class MemberService {
     }
 
       return query.orderBy("first_name")
-      .limit(request?.limit || 500)
+      .limit(request?.limit || 2000)
       .offset(request?.offset || 0);
   }
 
@@ -141,5 +144,36 @@ export class MemberService {
         status: MemberStatus.ACTIVE,
       })
       .orderBy("birth_day");
+  }
+
+  @Handler("upload:members")
+  async uploadMembers(path: string) {
+    const [members] = Object.values(await SpreadsheetService.readWorkbook(path));
+    const sheetData = plainToInstance(MembersUpload, {
+      members
+    })
+    await validateOrReject(sheetData);
+    const operationResult = await Promise.allSettled(sheetData.members.map(async (member) => {
+      const result = await Member.query().where({
+        phone_number: member.phoneNumber
+      }).update(member);
+
+      if(!result) {
+        return Member.query().insert({
+            ...member,
+            status: MemberStatus.ACTIVE,
+            deleted: false,
+        });
+      }
+
+      return result;
+    }));
+
+    const failed = operationResult.filter(({ status }) => status != 'fulfilled').length
+
+    return {
+      failed,
+      passed: operationResult.length - failed
+    };
   }
 }

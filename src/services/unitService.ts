@@ -14,7 +14,7 @@ export interface CreateUnitResponse {
 
 /**
  * Sends a request to create a new unit in the backend.
- * Uses the 'create:unit' channel to send data via ipcRenderer.
+ * Uses the 'create:unit' channel to send data via backend.
  * @param {CreateUnitServiceData} createUnitData - Data required to create a new unit.
  * @returns {Promise<CreateUnitResponse>} - A promise that resolves to the response from the backend.
  */
@@ -22,7 +22,7 @@ export const createUnit = async (
   createUnitData: CreateUnitServiceData,
 ): Promise<CreateUnitResponse> => {
   try {
-    const response = await window.ipcRenderer.invoke(
+    const response = await window.backend.invoke(
       "create:unit",
       createUnitData,
     );
@@ -41,7 +41,7 @@ export const createUnit = async (
  * @returns {Promise<Array>} - A promise that resolves to an array of units.
  */
 export const getTotalUnits = async (search: string) => {
-  const { data: units } = await window.ipcRenderer.invoke("get:units", {
+  const { data: units } = await window.backend.invoke("get:units", {
     search,
   });
   return units;
@@ -54,7 +54,7 @@ export const getTotalUnits = async (search: string) => {
  * @returns {Promise<Array>} - A promise that resolves to an array of members with upcoming birthdays.
  */
 export const getUpcomingBirthdays = async (month: number) => {
-  const { data: birthdays } = await window.ipcRenderer.invoke(
+  const { data: birthdays } = await window.backend.invoke(
     "birthdays:member",
     month,
   );

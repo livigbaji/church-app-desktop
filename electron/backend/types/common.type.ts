@@ -31,7 +31,10 @@ export enum ExternalMemberLabel {
 
 export enum MaritalStatus {
     SINGLE = 'SINGLE',
-    MARRIED = 'MARRIED'
+    MARRIED = 'MARRIED',
+    DIVORCED = 'DIVORCED',
+    SEPARATED = 'SEPARATED',
+    WIDOWED = 'WIDOWED',
 }
 
 export enum Gender {
