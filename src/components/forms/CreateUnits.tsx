@@ -5,6 +5,7 @@ import {
   CreateUnitServiceData,
   CreateUnitResponse,
 } from "@/services/unitService";
+import MemberDropDown from "@/components/MemberDropDown";
 
 const CreateUnits: React.FC = () => {
   // State to hold form values
@@ -15,12 +16,19 @@ const CreateUnits: React.FC = () => {
   });
 
   // Handle changes to form inputs
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | string) => {
+    if (typeof e === "string") {
+      setFormData((prevData) => ({
+        ...prevData,
+        leader: e,
+      }));
+    } else {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   // Handle form submission
@@ -51,14 +59,7 @@ const CreateUnits: React.FC = () => {
     >
       <h1>Create New Unit</h1>
       {/* Leader (Optional) */}
-      <TextField
-        fullWidth
-        label="Leader (Optional)"
-        name="leader"
-        value={formData.leader}
-        onChange={handleChange}
-        margin="normal"
-      />
+      <MemberDropDown onChange={handleChange} />
 
       {/* Name (Required) */}
       <TextField

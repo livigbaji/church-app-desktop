@@ -1,4 +1,3 @@
-// Interface for data required to create a unit
 export interface CreateUnitServiceData {
   leader?: string; // Optional leader ID, should be a UUID if provided
   name: string; // Name of the unit

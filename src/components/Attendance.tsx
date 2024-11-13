@@ -1,19 +1,17 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Header from "./Header";
-// import SearchField from "./SerachField";
 import CustomSpeedDial from "./CustomSpeedDial";
+import SearchField from "@/components/SerachField";
 
 const Attendance: React.FC = () => {
   return (
     <Box>
       <Header pageTitle="Attendance" />
-      TODO: Update attendance logic
-      {/*<SearchField*/}
-      {/*  onSearch={function (value: string): void {*/}
-      {/*    throw new Error("Function not implemented.");*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <SearchField
+        onSearch={(value: string) => console.log("Search for:", value)}
+      />
+
       <CustomSpeedDial actions={[]} />
     </Box>
   );
