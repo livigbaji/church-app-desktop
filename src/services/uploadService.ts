@@ -1,15 +1,17 @@
 export const uploadFile = async (filePath: string): Promise<string> => {
   try {
-    const { status, data: fileData } = await window.ipcRenderer.invoke(
-      "upload:sheet",
+    const { success, data } = await window.backend.invoke(
+      "upload:members",
       filePath,
     );
+
+    console.log({f: data })
     console.log("Here is the path: ", filePath);
-    if (status !== "success") {
-      throw new Error(`Upload failed with status: ${status}`);
+    if (!success) {
+      throw new Error(`Upload failed`);
     }
 
-    return fileData;
+    return data;
   } catch (error) {
     console.error("Error uploading file:", error);
     throw error;

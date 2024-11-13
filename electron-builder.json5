@@ -2,7 +2,7 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  appId: "YourAppID",
+  appId: "TUDesktop",
   asar: true,
   directories: {
     output: "release/${version}",

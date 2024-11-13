@@ -33,6 +33,7 @@ module.exports.up = async function(knex) {
         table.string('home_town');
         table.string('lga');
         table.string('state');
+        table.string('country');
         table.boolean('deleted').defaultTo(false);
         table.timestamp('deleted_at').nullable();
         table.timestamps({
