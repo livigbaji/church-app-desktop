@@ -11,6 +11,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { NavLink } from "react-router-dom";
 import { getUnits } from "@/services/unitService";
 import { UnitData } from "@/types";
 import CustomSpeedDial from "./CustomSpeedDial";
@@ -66,27 +67,28 @@ const SubUnit: React.FC = () => {
           }}
         />
 
-        <Button
-          startIcon={AddUnitIcon}
-          variant="contained"
-          disableElevation
-          sx={{
-            mb: 2,
-            height: 56,
-            minWidth: 180,
-            whiteSpace: "nowrap",
-            borderRadius: "5px",
-            bgcolor: "#132034",
-            textTransform: "none",
-            fontSize: "14px",
-            fontWeight: 400,
-          }}
-        >
-          Add Sub-units
-        </Button>
+        <NavLink to="/subunits/add-unit" style={{ textDecoration: "none" }}>
+          <Button
+            startIcon={AddUnitIcon}
+            variant="contained"
+            disableElevation
+            sx={{
+              mb: 2,
+              height: 56,
+              minWidth: 180,
+              whiteSpace: "nowrap",
+              borderRadius: "5px",
+              bgcolor: "#132034",
+              textTransform: "none",
+              fontSize: "14px",
+              fontWeight: 400,
+            }}
+          >
+            Add Sub-units
+          </Button>
+        </NavLink>
       </Box>
 
-      {/* Add table here */}
       <Box sx={{ mt: 2 }}>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="units table">
