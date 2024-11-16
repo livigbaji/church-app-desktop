@@ -46,6 +46,7 @@
     "react-hook-form": "^7.53.0",
     "react-phone-number-input": "^3.4.9",
     "react-router-dom": "^6.24.1",
+    "recharts": "^2.13.3",
     "reflect-metadata": "^0.2.2",
     "xlsx": "^0.18.5",
     "yup": "^1.4.0"

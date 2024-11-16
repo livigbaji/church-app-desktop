@@ -10,13 +10,15 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
-import { getUnits } from "@/services/unitService";
+import { getUnits, deleteUnit } from "@/services/unitService";
 import { UnitData } from "@/types";
 import CustomSpeedDial from "./CustomSpeedDial";
 import Header from "./Header";
 import CsvUpload from "./CsvUpload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AddUnitIcon = (
   <Icon
@@ -28,7 +30,7 @@ const AddUnitIcon = (
       justifyContent: "center",
     }}
   >
-    <img src="/public/assets/icons/add-unit-icon.svg" alt="Add Unit" />
+    <img src="/assets/icons/add-unit-icon.svg" alt="Add Unit" />
   </Icon>
 );
 
@@ -47,6 +49,16 @@ const SubUnit: React.FC = () => {
 
     fetchUnits();
   }, []);
+
+  const handleDeleteUnit = async (unitId: string) => {
+    try {
+      await deleteUnit(unitId);
+      setUnits(units.filter((unit) => unit.id !== unitId));
+      console.log("Unit deleted:", unitId);
+    } catch (error) {
+      console.error("Error deleting unit:", error);
+    }
+  };
 
   return (
     <div className="container">
@@ -97,6 +109,7 @@ const SubUnit: React.FC = () => {
                 <TableCell>S/N</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>Description</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -105,6 +118,15 @@ const SubUnit: React.FC = () => {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{unit.name}</TableCell>
                   <TableCell>{unit.description}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => handleDeleteUnit(unit.id)}
+                      aria-label="delete"
+                      color="error"
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

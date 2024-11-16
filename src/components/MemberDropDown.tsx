@@ -39,7 +39,13 @@ const MemberDropDown: React.FC<MemberDropDownProps> = ({ onChange }) => {
 
   return (
     <div>
-      <Select variant="outlined" value={selectedValue} onChange={handleChange}>
+      <Select
+        variant="outlined"
+        fullWidth
+        value={selectedValue}
+        placeholder="Select a member"
+        onChange={handleChange}
+      >
         <MenuItem value="">Select a member</MenuItem>
         {membersList.map((option) => (
           <MenuItem key={option.id} value={option.id}>
