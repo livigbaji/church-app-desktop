@@ -24,6 +24,7 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -31,12 +32,14 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SuspendIcon from "@mui/icons-material/PauseCircle";
+import UnsuspendIcon from "@mui/icons-material/PlayCircle";
 import Header from "./Header";
 import CustomSpeedDial from "./CustomSpeedDial";
 import {
   getAllMembers,
   deleteMember,
   suspendMember,
+  unsuspendMember,
   MemberData,
 } from "../services/memberService";
 import CsvUpload from "@/components/CsvUpload";
@@ -144,6 +147,24 @@ const Members: React.FC = () => {
     setSuspensionNote("");
   };
 
+  const handleUnsuspendMember = async (memberId: string) => {
+    try {
+      await unsuspendMember(memberId);
+      setMembers(
+        members.map((member) =>
+          member.id === memberId ? { ...member, status: "ACTIVE" } : member
+        )
+      );
+      setFilteredRows(
+        filteredRows.map((member) =>
+          member.id === memberId ? { ...member, status: "ACTIVE" } : member
+        )
+      );
+    } catch (error) {
+      console.error("Error unsuspending member:", error);
+    }
+  };
+
   return (
     <div className="container">
       <Header pageTitle="Members" />
@@ -232,12 +253,23 @@ const Members: React.FC = () => {
                     <TableCell>{row.phoneNumber}</TableCell>
                     <TableCell>{row.otherUnit || "N/A"}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleDeleteMember(row.id)}>
-                        <DeleteIcon color="error" />
-                      </IconButton>
-                      <IconButton onClick={() => handleSuspendMember(row.id)}>
-                        <SuspendIcon color="warning" />
-                      </IconButton>
+                      <Tooltip title="Delete Member">
+                        <IconButton onClick={() => handleDeleteMember(row.id)}>
+                          <DeleteIcon color="error" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Suspend Member">
+                        <IconButton onClick={() => handleSuspendMember(row.id)}>
+                          <SuspendIcon color="warning" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Unsuspend Member">
+                        <IconButton
+                          onClick={() => handleUnsuspendMember(row.id)}
+                        >
+                          <UnsuspendIcon color="success" />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))}

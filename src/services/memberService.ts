@@ -68,3 +68,13 @@ export const suspendMember = async (
     throw error;
   }
 };
+
+export const unsuspendMember = async (memberId: string): Promise<void> => {
+  try {
+    await window.backend.invoke("unsuspend:member", memberId);
+    console.log("Member unsuspended:", memberId);
+  } catch (error) {
+    console.error("Error unsuspending member:", error);
+    throw error;
+  }
+};
