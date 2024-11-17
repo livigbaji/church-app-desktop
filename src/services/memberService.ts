@@ -28,13 +28,10 @@ export interface MemberData {
 }
 
 export const createMember = async (
-  memberData: MemberData,
+  memberData: MemberData
 ): Promise<MemberData> => {
   try {
-    const response = await window.backend.invoke(
-      "create:member",
-      memberData,
-    );
+    const response = await window.backend.invoke("create:member", memberData);
     console.log("Member created:", response);
     return response; // Now, this function promises to return a MemberData object
   } catch (error) {
@@ -47,4 +44,14 @@ export const getAllMembers = async (): Promise<MemberData[]> => {
   const { data: members } = await window.backend.invoke("get:members");
 
   return members;
+};
+
+export const deleteMember = async (memberId: string): Promise<void> => {
+  try {
+    await window.backend.invoke("delete:member", memberId);
+    console.log("Member deleted:", memberId);
+  } catch (error) {
+    console.error("Error deleting member:", error);
+    throw error;
+  }
 };

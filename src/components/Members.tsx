@@ -23,17 +23,23 @@ import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "./Header";
 import CustomSpeedDial from "./CustomSpeedDial";
-import { getAllMembers, MemberData } from "../services/memberService";
+import {
+  getAllMembers,
+  deleteMember,
+  MemberData,
+} from "../services/memberService";
 import CsvUpload from "@/components/CsvUpload";
 
 const Members: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [filter, setFilter] = useState("");
+  const [members, setMembers] = useState<MemberData[]>([]);
   const [filteredRows, setFilteredRows] = useState<MemberData[]>([]);
-  const [selected] = useState<number[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
 
   const handleFileSelected = (file: File) => {
     console.log("File uploaded:", file);
@@ -45,8 +51,7 @@ const Members: React.FC = () => {
     const fetchData = async () => {
       try {
         const members = await getAllMembers();
-
-        // Set members data to filteredRows
+        setMembers(members);
         setFilteredRows(members);
       } catch (error) {
         console.error("Failed to fetch members:", error);
@@ -61,7 +66,7 @@ const Members: React.FC = () => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -72,14 +77,24 @@ const Members: React.FC = () => {
     setFilter(value);
     if (value) {
       setFilteredRows(
-        filteredRows.filter(
-          (row) => row.otherUnit?.toLowerCase() === value.toLowerCase(),
-        ),
+        members.filter(
+          (row) => row.otherUnit?.toLowerCase() === value.toLowerCase()
+        )
       );
     } else {
-      setFilteredRows(filteredRows);
+      setFilteredRows(members);
     }
     setPage(0);
+  };
+
+  const handleDeleteMember = async (memberId: string) => {
+    try {
+      await deleteMember(memberId);
+      setMembers(members.filter((member) => member.id !== memberId));
+      setFilteredRows(filteredRows.filter((member) => member.id !== memberId));
+    } catch (error) {
+      console.error("Error deleting member:", error);
+    }
   };
 
   return (
@@ -163,7 +178,9 @@ const Members: React.FC = () => {
                     </TableCell>
                     <TableCell>{page * rowsPerPage + index + 1}</TableCell>
                     <TableCell>
-                      {`${row.firstName} ${row.middleName || ""} ${row.lastName}`}
+                      {`${row.firstName} ${row.middleName || ""} ${
+                        row.lastName
+                      }`}
                     </TableCell>
                     <TableCell>{row.phoneNumber}</TableCell>
                     <TableCell>{row.otherUnit || "N/A"}</TableCell>
@@ -174,8 +191,9 @@ const Members: React.FC = () => {
                       <IconButton>
                         <VisibilityIcon />
                       </IconButton>
-                      <IconButton>
-                        <CancelIcon color="error" />
+
+                      <IconButton onClick={() => handleDeleteMember(row.id)}>
+                        <DeleteIcon color="error" />
                       </IconButton>
                     </TableCell>
                   </TableRow>
