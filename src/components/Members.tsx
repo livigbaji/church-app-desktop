@@ -27,9 +27,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SuspendIcon from "@mui/icons-material/PauseCircle";
 import UnsuspendIcon from "@mui/icons-material/PlayCircle";
@@ -54,6 +52,8 @@ const Members: React.FC = () => {
   const [openSuspendDialog, setOpenSuspendDialog] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState("");
   const [suspensionNote, setSuspensionNote] = useState("");
+
+  const navigate = useNavigate();
 
   const handleFileSelected = (file: File) => {
     console.log("File uploaded:", file);
@@ -199,6 +199,7 @@ const Members: React.FC = () => {
           <Grid item>
             <CsvUpload onFileSelected={handleFileSelected} />{" "}
             <Button
+              onClick={() => navigate("/members/newmember")}
               variant="contained"
               startIcon={<AddIcon />}
               sx={{
@@ -207,9 +208,10 @@ const Members: React.FC = () => {
                 "&:hover": { backgroundColor: "#0f1724" },
                 height: 56,
                 minWidth: 180,
+                textTransform: "capitalize",
               }}
             >
-              Add User
+              Add Member
             </Button>
           </Grid>
         </Grid>
