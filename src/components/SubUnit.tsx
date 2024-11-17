@@ -74,7 +74,7 @@ const SubUnit: React.FC = () => {
         }}
       >
         <CsvUpload
-          onFileSelected={function (file: File): void {
+          onFileSelected={function (): void {
             throw new Error("Function not implemented.");
           }}
         />

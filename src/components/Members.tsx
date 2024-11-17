@@ -44,11 +44,11 @@ import CsvUpload from "@/components/CsvUpload";
 
 const Members: React.FC = () => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState("");
   const [members, setMembers] = useState<MemberData[]>([]);
   const [filteredRows, setFilteredRows] = useState<MemberData[]>([]);
-  const [selected, setSelected] = useState<number[]>([]);
+  const [selected] = useState<number[]>([]);
   const [openSuspendDialog, setOpenSuspendDialog] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState("");
   const [suspensionNote, setSuspensionNote] = useState("");
@@ -278,7 +278,7 @@ const Members: React.FC = () => {
             </TableBody>
           </Table>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 15, 25]}
             component="div"
             count={filteredRows.length}
             rowsPerPage={rowsPerPage}

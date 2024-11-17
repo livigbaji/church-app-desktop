@@ -1,5 +1,28 @@
 [
   {
+    "state": "Abia",
+    "alias": "abia",
+    "lgas": [
+      "Aba North",
+      "Arochukwu",
+      "Aba South",
+      "Bende",
+      "Isiala Ngwa North",
+      "Ikwuano",
+      "Isiala Ngwa South",
+      "Isuikwuato",
+      "Obi Ngwa",
+      "Ohafia",
+      "Osisioma",
+      "Ugwunagbo",
+      "Ukwa East",
+      "Ukwa West",
+      "Umuahia North",
+      "Umuahia South",
+      "Umu Nneochi"
+    ]
+  },
+  {
     "state": "Adamawa",
     "alias": "adamawa",
     "lgas": [
@@ -970,29 +993,6 @@
       "Suleja",
       "Tafa",
       "Wushishi"
-    ]
-  },
-  {
-    "state": "Abia",
-    "alias": "abia",
-    "lgas": [
-      "Aba North",
-      "Arochukwu",
-      "Aba South",
-      "Bende",
-      "Isiala Ngwa North",
-      "Ikwuano",
-      "Isiala Ngwa South",
-      "Isuikwuato",
-      "Obi Ngwa",
-      "Ohafia",
-      "Osisioma",
-      "Ugwunagbo",
-      "Ukwa East",
-      "Ukwa West",
-      "Umuahia North",
-      "Umuahia South",
-      "Umu Nneochi"
     ]
   }
 ]

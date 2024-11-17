@@ -1,9 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, Grid, MenuItem } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Grid,
+  MenuItem,
+  Typography,
+  styled,
+} from "@mui/material";
 import Header from "../Header";
 import { createMember, MemberData } from "@/services/memberService";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+
+const StyledTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#000",
+      borderWidth: "1.5px",
+      borderRadius: "8px",
+    },
+    "&:hover fieldset": {
+      borderColor: "#000",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#000",
+    },
+  },
+});
+
+type NigerianState = {
+  state: string;
+  lgas: string[];
+};
 
 const maritalStatusOptions = ["SINGLE", "MARRIED"];
 const genderOptions = ["MALE", "FEMALE"];
@@ -36,7 +65,7 @@ const initialFormState: MemberData = {
   baptizedAt: "",
   occupation: "",
   birthDay: 0,
-  birthMonth: 1, // Initialize with a valid value
+  birthMonth: 1,
   phoneNumber: "",
   address: "",
   reference: "",
@@ -55,17 +84,14 @@ const initialFormState: MemberData = {
 const CreateMember: React.FC = () => {
   const [formData, setFormData] = useState<MemberData>(initialFormState);
   const [error, setError] = useState<string | null>(null);
-  const [states, setStates] = useState<any[]>([]);
+  const [states, setStates] = useState<NigerianState[]>([]);
   const [lgas, setLgas] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("./nigerianStates.json"); // Correct relative path
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
+        const response = await fetch("./nigerianStates.json");
+        const data: NigerianState[] = await response.json();
         setStates(data);
       } catch (error) {
         console.error("Failed to fetch states data:", error);
@@ -78,7 +104,7 @@ const CreateMember: React.FC = () => {
   useEffect(() => {
     if (formData.state) {
       const selectedState = states.find(
-        (state) => state.state === formData.state
+        (state) => state.state === formData.state,
       );
       if (selectedState) {
         setLgas(selectedState.lgas);
@@ -96,7 +122,7 @@ const CreateMember: React.FC = () => {
 
   const handlePhoneChange = (
     name: keyof MemberData,
-    value: string | undefined
+    value: string | undefined,
   ) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -117,10 +143,10 @@ const CreateMember: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box sx={{ padding: 3, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
       <Header pageTitle="Add Member" />
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           {/* Personal Details */}
           {[
             { label: "First Name", name: "firstName", required: true },
@@ -137,13 +163,16 @@ const CreateMember: React.FC = () => {
             { label: "Home Town", name: "homeTown", required: true },
           ].map((field) => (
             <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
+              <StyledTextField
                 fullWidth
                 label={field.label}
                 name={field.name}
                 required={field.required}
                 value={formData[field.name as keyof MemberData]}
                 onChange={handleChange}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+                InputLabelProps={{ shrink: true }}
               />
             </Grid>
           ))}
@@ -158,7 +187,7 @@ const CreateMember: React.FC = () => {
             { label: "Gender", name: "gender", options: genderOptions },
           ].map((field) => (
             <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
+              <StyledTextField
                 fullWidth
                 select
                 label={field.label}
@@ -166,13 +195,16 @@ const CreateMember: React.FC = () => {
                 required
                 value={formData[field.name as keyof MemberData]}
                 onChange={handleChange}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
+                InputLabelProps={{ shrink: true }}
               >
                 {field.options.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
                 ))}
-              </TextField>
+              </StyledTextField>
             </Grid>
           ))}
 
@@ -184,7 +216,7 @@ const CreateMember: React.FC = () => {
             { label: "Baptized At", name: "baptizedAt" },
           ].map((field) => (
             <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
+              <StyledTextField
                 fullWidth
                 type="date"
                 label={field.label}
@@ -192,13 +224,15 @@ const CreateMember: React.FC = () => {
                 value={formData[field.name as keyof MemberData]}
                 onChange={handleChange}
                 InputLabelProps={{ shrink: true }}
+                variant="outlined"
+                sx={{ marginBottom: 2 }}
               />
             </Grid>
           ))}
 
           {/* Birth Day */}
           <Grid item xs={12} sm={3}>
-            <TextField
+            <StyledTextField
               fullWidth
               type="number"
               label="Birth Day"
@@ -207,12 +241,15 @@ const CreateMember: React.FC = () => {
               value={formData.birthDay}
               onChange={handleChange}
               InputProps={{ inputProps: { min: 1, max: 31 } }}
+              variant="outlined"
+              sx={{ marginBottom: 2 }}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid>
 
           {/* Birth Month */}
           <Grid item xs={12} sm={3}>
-            <TextField
+            <StyledTextField
               fullWidth
               select
               label="Birth Month"
@@ -220,18 +257,21 @@ const CreateMember: React.FC = () => {
               required
               value={formData.birthMonth}
               onChange={handleChange}
+              variant="outlined"
+              sx={{ marginBottom: 2 }}
+              InputLabelProps={{ shrink: true }}
             >
               {monthOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
-            </TextField>
+            </StyledTextField>
           </Grid>
 
           {/* State */}
           <Grid item xs={12} sm={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               select
               label="State"
@@ -239,18 +279,21 @@ const CreateMember: React.FC = () => {
               required
               value={formData.state}
               onChange={handleChange}
+              variant="outlined"
+              sx={{ marginBottom: 2 }}
+              InputLabelProps={{ shrink: true }}
             >
               {states.map((state) => (
                 <MenuItem key={state.state} value={state.state}>
                   {state.state}
                 </MenuItem>
               ))}
-            </TextField>
+            </StyledTextField>
           </Grid>
 
           {/* LGA */}
           <Grid item xs={12} sm={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               select
               label="LGA"
@@ -258,53 +301,81 @@ const CreateMember: React.FC = () => {
               required
               value={formData.lga}
               onChange={handleChange}
+              variant="outlined"
+              sx={{ marginBottom: 2 }}
+              InputLabelProps={{ shrink: true }}
             >
               {lgas.map((lga) => (
                 <MenuItem key={lga} value={lga}>
                   {lga}
                 </MenuItem>
               ))}
-            </TextField>
+            </StyledTextField>
           </Grid>
 
           {/* Phone Inputs */}
           <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ marginBottom: 1 }}>
+              Phone Number
+            </Typography>
             <PhoneInput
               international
               defaultCountry="NG"
               placeholder="Enter phone number"
               value={formData.phoneNumber}
               onChange={(value) => handlePhoneChange("phoneNumber", value)}
+              style={{ marginBottom: "16px" }}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{ marginBottom: 1 }}>
+              Next of Kin Phone Number
+            </Typography>
             <PhoneInput
               international
               defaultCountry="NG"
               placeholder="Enter next of kin phone number"
               value={formData.nextOfKinNumber}
               onChange={(value) => handlePhoneChange("nextOfKinNumber", value)}
+              style={{ marginBottom: "16px" }}
             />
           </Grid>
 
           {/* Next of Kin Name */}
           <Grid item xs={12} sm={6}>
-            <TextField
+            <StyledTextField
               fullWidth
               required
               label="Next of Kin"
               name="nextOfKinName"
               value={formData.nextOfKinName}
               onChange={handleChange}
+              variant="outlined"
+              sx={{ marginBottom: 2 }}
+              InputLabelProps={{ shrink: true }}
             />
           </Grid>
 
           {/* Submit Button */}
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                marginTop: 2,
+                backgroundColor: "#1976d2",
+                "&:hover": { backgroundColor: "#1565c0" },
+              }}
+            >
               Submit
             </Button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && (
+              <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>
+                {error}
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </form>
