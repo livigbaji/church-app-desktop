@@ -16,19 +16,22 @@ const CreateUnits: React.FC = () => {
   });
 
   // Handle changes to form inputs
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | string) => {
-    if (typeof e === "string") {
-      setFormData((prevData) => ({
-        ...prevData,
-        leader: e,
-      }));
-    } else {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Handle changes from MemberDropDown
+  const handleLeaderChange = (leader: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      leader: leader,
+    }));
   };
 
   // Handle form submission
@@ -59,7 +62,7 @@ const CreateUnits: React.FC = () => {
     >
       <h1>Create New Unit</h1>
       {/* Leader (Optional) */}
-      <MemberDropDown onChange={handleChange} />
+      <MemberDropDown onChange={handleLeaderChange} />
 
       {/* Name (Required) */}
       <TextField

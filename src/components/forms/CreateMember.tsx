@@ -34,6 +34,7 @@ const initialFormState: MemberData = {
   homeTown: "",
   lga: "",
   state: "",
+  id: "",
 };
 
 const CreateMember: React.FC = () => {
@@ -50,7 +51,7 @@ const CreateMember: React.FC = () => {
 
   const handlePhoneChange = (
     name: keyof MemberData,
-    value: string | undefined,
+    value: string | undefined
   ) => {
     setFormData((prevData) => ({
       ...prevData,
