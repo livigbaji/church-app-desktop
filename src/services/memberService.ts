@@ -55,3 +55,16 @@ export const deleteMember = async (memberId: string): Promise<void> => {
     throw error;
   }
 };
+
+export const suspendMember = async (
+  memberId: string,
+  note: string
+): Promise<void> => {
+  try {
+    await window.backend.invoke("suspend:member", memberId, note);
+    console.log("Member suspended:", memberId);
+  } catch (error) {
+    console.error("Error suspending member:", error);
+    throw error;
+  }
+};

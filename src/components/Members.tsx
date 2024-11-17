@@ -18,17 +18,25 @@ import {
   InputLabel,
   FormControl,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SuspendIcon from "@mui/icons-material/PauseCircle";
 import Header from "./Header";
 import CustomSpeedDial from "./CustomSpeedDial";
 import {
   getAllMembers,
   deleteMember,
+  suspendMember,
   MemberData,
 } from "../services/memberService";
 import CsvUpload from "@/components/CsvUpload";
@@ -40,6 +48,9 @@ const Members: React.FC = () => {
   const [members, setMembers] = useState<MemberData[]>([]);
   const [filteredRows, setFilteredRows] = useState<MemberData[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
+  const [openSuspendDialog, setOpenSuspendDialog] = useState(false);
+  const [selectedMemberId, setSelectedMemberId] = useState("");
+  const [suspensionNote, setSuspensionNote] = useState("");
 
   const handleFileSelected = (file: File) => {
     console.log("File uploaded:", file);
@@ -95,6 +106,42 @@ const Members: React.FC = () => {
     } catch (error) {
       console.error("Error deleting member:", error);
     }
+  };
+
+  const handleSuspendMember = (memberId: string) => {
+    setSelectedMemberId(memberId);
+    setOpenSuspendDialog(true);
+  };
+
+  const handleSuspendConfirm = async () => {
+    try {
+      await suspendMember(selectedMemberId, suspensionNote);
+      setMembers(
+        members.map((member) =>
+          member.id === selectedMemberId
+            ? { ...member, status: "SUSPENDED" }
+            : member
+        )
+      );
+      setFilteredRows(
+        filteredRows.map((member) =>
+          member.id === selectedMemberId
+            ? { ...member, status: "SUSPENDED" }
+            : member
+        )
+      );
+      setOpenSuspendDialog(false);
+      setSelectedMemberId("");
+      setSuspensionNote("");
+    } catch (error) {
+      console.error("Error suspending member:", error);
+    }
+  };
+
+  const handleSuspendCancel = () => {
+    setOpenSuspendDialog(false);
+    setSelectedMemberId("");
+    setSuspensionNote("");
   };
 
   return (
@@ -185,15 +232,11 @@ const Members: React.FC = () => {
                     <TableCell>{row.phoneNumber}</TableCell>
                     <TableCell>{row.otherUnit || "N/A"}</TableCell>
                     <TableCell>
-                      <IconButton>
-                        <AddCircleIcon color="success" />
-                      </IconButton>
-                      <IconButton>
-                        <VisibilityIcon />
-                      </IconButton>
-
                       <IconButton onClick={() => handleDeleteMember(row.id)}>
                         <DeleteIcon color="error" />
+                      </IconButton>
+                      <IconButton onClick={() => handleSuspendMember(row.id)}>
+                        <SuspendIcon color="warning" />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -213,6 +256,32 @@ const Members: React.FC = () => {
       </Box>
 
       <CustomSpeedDial actions={[]} />
+
+      <Dialog open={openSuspendDialog} onClose={handleSuspendCancel}>
+        <DialogTitle>Suspend Member</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please provide a reason for suspending this member.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Suspension Note"
+            type="text"
+            fullWidth
+            value={suspensionNote}
+            onChange={(e) => setSuspensionNote(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleSuspendCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSuspendConfirm} color="primary">
+            Suspend
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
