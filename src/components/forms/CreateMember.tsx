@@ -8,6 +8,21 @@ import PhoneInput from "react-phone-number-input";
 const maritalStatusOptions = ["SINGLE", "MARRIED"];
 const genderOptions = ["MALE", "FEMALE"];
 
+const monthOptions = [
+  { value: 1, label: "January" },
+  { value: 2, label: "February" },
+  { value: 3, label: "March" },
+  { value: 4, label: "April" },
+  { value: 5, label: "May" },
+  { value: 6, label: "June" },
+  { value: 7, label: "July" },
+  { value: 8, label: "August" },
+  { value: 9, label: "September" },
+  { value: 10, label: "October" },
+  { value: 11, label: "November" },
+  { value: 12, label: "December" },
+];
+
 const initialFormState: MemberData = {
   firstName: "",
   middleName: "",
@@ -153,24 +168,38 @@ const CreateMember: React.FC = () => {
             </Grid>
           ))}
 
-          {/* Birth Day and Month */}
-          {[
-            { label: "Birth Day", name: "birthDay", min: 1, max: 31 },
-            { label: "Birth Month", name: "birthMonth", min: 1, max: 12 },
-          ].map((field) => (
-            <Grid item xs={12} sm={3} key={field.name}>
-              <TextField
-                fullWidth
-                type="number"
-                label={field.label}
-                name={field.name}
-                required
-                value={formData[field.name as keyof MemberData]}
-                onChange={handleChange}
-                InputProps={{ inputProps: { min: field.min, max: field.max } }}
-              />
-            </Grid>
-          ))}
+          {/* Birth Day */}
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              type="number"
+              label="Birth Day"
+              name="birthDay"
+              required
+              value={formData.birthDay}
+              onChange={handleChange}
+              InputProps={{ inputProps: { min: 1, max: 31 } }}
+            />
+          </Grid>
+
+          {/* Birth Month */}
+          <Grid item xs={12} sm={3}>
+            <TextField
+              fullWidth
+              select
+              label="Birth Month"
+              name="birthMonth"
+              required
+              value={formData.birthMonth}
+              onChange={handleChange}
+            >
+              {monthOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
 
           {/* Phone Inputs */}
           <Grid item xs={12} sm={6}>
