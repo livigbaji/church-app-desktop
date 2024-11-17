@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Button, Grid, MenuItem } from "@mui/material";
 import Header from "../Header";
 import { createMember, MemberData } from "@/services/memberService";
@@ -36,7 +36,7 @@ const initialFormState: MemberData = {
   baptizedAt: "",
   occupation: "",
   birthDay: 0,
-  birthMonth: 0,
+  birthMonth: 1, // Initialize with a valid value
   phoneNumber: "",
   address: "",
   reference: "",
@@ -55,6 +55,36 @@ const initialFormState: MemberData = {
 const CreateMember: React.FC = () => {
   const [formData, setFormData] = useState<MemberData>(initialFormState);
   const [error, setError] = useState<string | null>(null);
+  const [states, setStates] = useState<any[]>([]);
+  const [lgas, setLgas] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("./nigerianStates.json"); // Correct relative path
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setStates(data);
+      } catch (error) {
+        console.error("Failed to fetch states data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (formData.state) {
+      const selectedState = states.find(
+        (state) => state.state === formData.state
+      );
+      if (selectedState) {
+        setLgas(selectedState.lgas);
+      }
+    }
+  }, [formData.state, states]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -105,8 +135,6 @@ const CreateMember: React.FC = () => {
             { label: "Hobbies", name: "hobbies", required: true },
             { label: "Village", name: "village", required: true },
             { label: "Home Town", name: "homeTown", required: true },
-            { label: "LGA", name: "lga", required: true },
-            { label: "State", name: "state", required: true },
           ].map((field) => (
             <Grid item xs={12} sm={6} key={field.name}>
               <TextField
@@ -196,6 +224,44 @@ const CreateMember: React.FC = () => {
               {monthOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          {/* State */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              select
+              label="State"
+              name="state"
+              required
+              value={formData.state}
+              onChange={handleChange}
+            >
+              {states.map((state) => (
+                <MenuItem key={state.state} value={state.state}>
+                  {state.state}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          {/* LGA */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              select
+              label="LGA"
+              name="lga"
+              required
+              value={formData.lga}
+              onChange={handleChange}
+            >
+              {lgas.map((lga) => (
+                <MenuItem key={lga} value={lga}>
+                  {lga}
                 </MenuItem>
               ))}
             </TextField>
