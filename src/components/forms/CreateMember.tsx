@@ -1,80 +1,44 @@
-import React, { useState } from "react";
-import { Box, TextField, Button, Grid, MenuItem } from "@mui/material";
+import React from "react";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Header from "../Header";
-import { createMember, MemberData } from "@/services/memberService";
-import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
+import useMemberForm from "../../hooks/useMemberForm";
+import TextFieldComponent from "./TextFieldComponent";
+import PhoneInputComponent from "./PhoneInputComponent";
 
 const maritalStatusOptions = ["SINGLE", "MARRIED"];
 const genderOptions = ["MALE", "FEMALE"];
 
-const initialFormState: MemberData = {
-  firstName: "",
-  middleName: "",
-  lastName: "",
-  maritalStatus: "",
-  gender: "",
-  homeCell: "",
-  joinedUnitAt: "",
-  joinedCommissionAt: "",
-  newBirthAt: "",
-  baptizedAt: "",
-  occupation: "",
-  birthDay: 0,
-  birthMonth: 0,
-  phoneNumber: "",
-  address: "",
-  reference: "",
-  qualification: "",
-  otherUnit: "",
-  hobbies: "",
-  nextOfKinName: "",
-  nextOfKinNumber: "",
-  village: "",
-  homeTown: "",
-  lga: "",
-  state: "",
-};
+const monthOptions = [
+  { value: 1, label: "January" },
+  { value: 2, label: "February" },
+  { value: 3, label: "March" },
+  { value: 4, label: "April" },
+  { value: 5, label: "May" },
+  { value: 6, label: "June" },
+  { value: 7, label: "July" },
+  { value: 8, label: "August" },
+  { value: 9, label: "September" },
+  { value: 10, label: "October" },
+  { value: 11, label: "November" },
+  { value: 12, label: "December" },
+];
 
 const CreateMember: React.FC = () => {
-  const [formData, setFormData] = useState<MemberData>(initialFormState);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: ["birthDay", "birthMonth"].includes(name) ? Number(value) : value,
-    }));
-  };
-
-  const handlePhoneChange = (
-    name: keyof MemberData,
-    value: string | undefined,
-  ) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value || "",
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(null);
-    try {
-      await createMember(formData);
-      console.log("Form data:", formData);
-      setFormData(initialFormState);
-    } catch (error) {
-      setError("Failed to create member. Please try again.");
-    }
-  };
+  const {
+    formData,
+    error,
+    states,
+    lgas,
+    handleChange,
+    handlePhoneChange,
+    handleSubmit,
+  } = useMemberForm();
 
   return (
-    <Box>
+    <Box sx={{ padding: 3, backgroundColor: "#f9f9f9", borderRadius: 2 }}>
       <Header pageTitle="Add Member" />
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           {/* Personal Details */}
           {[
             { label: "First Name", name: "firstName", required: true },
@@ -89,19 +53,15 @@ const CreateMember: React.FC = () => {
             { label: "Hobbies", name: "hobbies", required: true },
             { label: "Village", name: "village", required: true },
             { label: "Home Town", name: "homeTown", required: true },
-            { label: "LGA", name: "lga", required: true },
-            { label: "State", name: "state", required: true },
           ].map((field) => (
-            <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
-                fullWidth
-                label={field.label}
-                name={field.name}
-                required={field.required}
-                value={formData[field.name as keyof MemberData]}
-                onChange={handleChange}
-              />
-            </Grid>
+            <TextFieldComponent
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              value={formData[field.name as keyof typeof formData] || ""}
+              onChange={handleChange}
+              required={field.required}
+            />
           ))}
 
           {/* Select Fields */}
@@ -113,23 +73,15 @@ const CreateMember: React.FC = () => {
             },
             { label: "Gender", name: "gender", options: genderOptions },
           ].map((field) => (
-            <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
-                fullWidth
-                select
-                label={field.label}
-                name={field.name}
-                required
-                value={formData[field.name as keyof MemberData]}
-                onChange={handleChange}
-              >
-                {field.options.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
+            <TextFieldComponent
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              value={formData[field.name as keyof typeof formData] || ""}
+              onChange={handleChange}
+              required
+              options={field.options}
+            />
           ))}
 
           {/* Date Fields */}
@@ -139,76 +91,98 @@ const CreateMember: React.FC = () => {
             { label: "New Birth At", name: "newBirthAt" },
             { label: "Baptized At", name: "baptizedAt" },
           ].map((field) => (
-            <Grid item xs={12} sm={6} key={field.name}>
-              <TextField
-                fullWidth
-                type="date"
-                label={field.label}
-                name={field.name}
-                value={formData[field.name as keyof MemberData]}
-                onChange={handleChange}
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
+            <TextFieldComponent
+              key={field.name}
+              label={field.label}
+              name={field.name}
+              value={formData[field.name as keyof typeof formData] || ""}
+              onChange={handleChange}
+              type="date"
+            />
           ))}
 
-          {/* Birth Day and Month */}
-          {[
-            { label: "Birth Day", name: "birthDay", min: 1, max: 31 },
-            { label: "Birth Month", name: "birthMonth", min: 1, max: 12 },
-          ].map((field) => (
-            <Grid item xs={12} sm={3} key={field.name}>
-              <TextField
-                fullWidth
-                type="number"
-                label={field.label}
-                name={field.name}
-                required
-                value={formData[field.name as keyof MemberData]}
-                onChange={handleChange}
-                InputProps={{ inputProps: { min: field.min, max: field.max } }}
-              />
-            </Grid>
-          ))}
+          {/* Birth Day */}
+          <TextFieldComponent
+            label="Birth Day"
+            name="birthDay"
+            value={formData.birthDay || 0}
+            onChange={handleChange}
+            required
+            type="number"
+            InputProps={{ inputProps: { min: 1, max: 31 } }}
+          />
+
+          {/* Birth Month */}
+          <TextFieldComponent
+            label="Birth Month"
+            name="birthMonth"
+            value={formData.birthMonth || 1}
+            onChange={handleChange}
+            required
+            options={monthOptions}
+          />
+
+          {/* State */}
+          <TextFieldComponent
+            label="State"
+            name="state"
+            value={formData.state || ""}
+            onChange={handleChange}
+            required
+            options={states.map((state) => state.state)}
+          />
+
+          {/* LGA */}
+          <TextFieldComponent
+            label="LGA"
+            name="lga"
+            value={formData.lga || ""}
+            onChange={handleChange}
+            required
+            options={lgas}
+          />
 
           {/* Phone Inputs */}
-          <Grid item xs={12} sm={6}>
-            <PhoneInput
-              international
-              defaultCountry="NG"
-              placeholder="Enter phone number"
-              value={formData.phoneNumber}
-              onChange={(value) => handlePhoneChange("phoneNumber", value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <PhoneInput
-              international
-              defaultCountry="NG"
-              placeholder="Enter next of kin phone number"
-              value={formData.nextOfKinNumber}
-              onChange={(value) => handlePhoneChange("nextOfKinNumber", value)}
-            />
-          </Grid>
+          <PhoneInputComponent
+            label="Phone Number"
+            value={formData.phoneNumber}
+            onChange={(value) => handlePhoneChange("phoneNumber", value)}
+          />
+          <PhoneInputComponent
+            label="Next of Kin Phone Number"
+            value={formData.nextOfKinNumber}
+            onChange={(value) => handlePhoneChange("nextOfKinNumber", value)}
+          />
 
           {/* Next of Kin Name */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              fullWidth
-              required
-              label="Next of Kin"
-              name="nextOfKinName"
-              value={formData.nextOfKinName}
-              onChange={handleChange}
-            />
-          </Grid>
+          <TextFieldComponent
+            label="Next of Kin"
+            name="nextOfKinName"
+            value={formData.nextOfKinName || ""}
+            onChange={handleChange}
+            required
+          />
 
           {/* Submit Button */}
           <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{
+                marginTop: 2,
+                backgroundColor: "#1976d2",
+                "&:hover": { backgroundColor: "#1565c0" },
+              }}
+            >
               Submit
             </Button>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && (
+              <Typography variant="body1" color="error" sx={{ marginTop: 2 }}>
+                {error}
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </form>

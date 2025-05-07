@@ -9,6 +9,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
@@ -43,7 +44,7 @@ const subUnitItems = [
 const Sidebar = () => {
   const location = useLocation();
   const [subUnitAnchorEl, setSubUnitAnchorEl] = useState<null | HTMLElement>(
-    null,
+    null
   );
 
   const handleSubUnitMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,10 +81,11 @@ const Sidebar = () => {
             item.text === "Sub-Units" ? (
               <div key={index}>
                 <ListItem
-                  onClick={handleSubUnitMenuOpen}
+                  component={NavLink}
+                  to={item.path}
                   sx={{
                     backgroundColor: location.pathname.startsWith(item.path)
-                      ? "red"
+                      ? "rgba(255, 255, 255, 0.1)"
                       : "inherit",
                     "&.active": {
                       backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -95,13 +97,23 @@ const Sidebar = () => {
                     color: "#FFFFFF",
                     padding: "20px",
                     maxWidth: "203px",
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                 >
                   <ListItemIcon sx={{ color: "#FFFFFF" }}>
                     {item.icon}
                   </ListItemIcon>
                   <ListItemText primary={item.text} />
-                  <ExpandMoreIcon />
+                  <IconButton
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleSubUnitMenuOpen(event);
+                    }}
+                    sx={{ padding: 0 }}
+                  >
+                    <ExpandMoreIcon />
+                  </IconButton>
                 </ListItem>
                 <Menu
                   anchorEl={subUnitAnchorEl}
@@ -113,12 +125,14 @@ const Sidebar = () => {
                       <ListItemIcon sx={{ minWidth: "40px" }}>
                         {subUnit.icon}
                       </ListItemIcon>
-                      <NavLink
+                      <Button
+                        component={NavLink}
                         to={subUnit.path}
                         style={{ textDecoration: "none", color: "inherit" }}
+                        sx={{ width: "100%", justifyContent: "flex-start" }}
                       >
                         {subUnit.text}
-                      </NavLink>
+                      </Button>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -130,7 +144,9 @@ const Sidebar = () => {
                 to={item.path}
                 sx={{
                   backgroundColor:
-                    location.pathname === item.path ? "red" : "inherit",
+                    location.pathname === item.path
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "inherit",
                   "&.active": {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                     borderRadius: "8px",
@@ -148,7 +164,7 @@ const Sidebar = () => {
                 </ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItem>
-            ),
+            )
           )}
         </List>
         <Button

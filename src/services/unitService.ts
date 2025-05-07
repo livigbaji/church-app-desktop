@@ -1,4 +1,5 @@
-// Interface for data required to create a unit
+import { UnitData } from "@/types";
+
 export interface CreateUnitServiceData {
   leader?: string; // Optional leader ID, should be a UUID if provided
   name: string; // Name of the unit
@@ -19,17 +20,31 @@ export interface CreateUnitResponse {
  * @returns {Promise<CreateUnitResponse>} - A promise that resolves to the response from the backend.
  */
 export const createUnit = async (
-  createUnitData: CreateUnitServiceData,
+  createUnitData: CreateUnitServiceData
 ): Promise<CreateUnitResponse> => {
   try {
-    const response = await window.backend.invoke(
-      "create:unit",
-      createUnitData,
-    );
+    const response = await window.backend.invoke("create:unit", createUnitData);
     console.log("Unit created:", response);
     return response;
   } catch (error) {
     console.error("Error creating Unit:", error);
+    throw error;
+  }
+};
+
+/**
+ * Fetches the list of units from the backend, optionally filtered by a search term.
+ * Uses the 'get:units' channel to request unit data.
+ * @param {string} search - Optional search query to filter the units.
+ * @returns {Promise<UnitData[]>} - A promise that resolves to an array of units.
+ */
+export const getUnits = async (search?: string): Promise<UnitData[]> => {
+  try {
+    const response = await window.backend.invoke("get:units", { search });
+    console.log("Units fetched:", response);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching units:", error);
     throw error;
   }
 };
@@ -56,7 +71,24 @@ export const getTotalUnits = async (search: string) => {
 export const getUpcomingBirthdays = async (month: number) => {
   const { data: birthdays } = await window.backend.invoke(
     "birthdays:member",
-    month,
+    month
   );
   return birthdays;
+};
+
+/**
+ * Sends a request to delete a unit by its ID.
+ * Uses the 'delete:unit' channel to send data via backend.
+ * @param {string} unitId - The ID of the unit to be deleted.
+ * @returns {Promise<void>} - A promise that resolves when the unit is successfully deleted.
+ */
+export const deleteUnit = async (unitId: string): Promise<void> => {
+  try {
+    const response = await window.backend.invoke("delete:unit", unitId);
+    console.log("Unit deleted:", response);
+    return response;
+  } catch (error) {
+    console.error("Error deleting unit:", error);
+    throw error;
+  }
 };

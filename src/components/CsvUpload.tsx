@@ -1,7 +1,20 @@
 import React from "react";
-import { Button } from "@mui/material";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { uploadFile } from "@/services/uploadService";
+import { Button, Icon } from "@mui/material";
+import { uploadFile } from "@/services/spreadSheetService";
+
+const UploadIcon = (
+  <Icon
+    sx={{
+      height: "30px",
+      width: "30px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <img src="/public/assets/icons/Upload-icon.svg" alt="Upload" />
+  </Icon>
+);
 
 interface CsvUploadProps {
   onFileSelected: (file: File) => void;
@@ -34,12 +47,13 @@ const CsvUpload: React.FC<CsvUploadProps> = () => {
   return (
     <Button
       variant="outlined"
-      startIcon={<UploadFileIcon sx={{ color: "#132034" }} />}
+      startIcon={UploadIcon}
       sx={{
         marginRight: 2,
         backgroundColor: "#fff",
         borderColor: "#525252",
         color: "#132034",
+        textTransform: "none",
         "&:hover": {
           backgroundColor: "#f0f0f0",
           borderColor: "#525252",
