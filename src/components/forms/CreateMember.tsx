@@ -270,7 +270,7 @@ const CreateMember: React.FC = () => {
             {/* Submit Button */}
             <Grid item xs={6} lg={6} md={6}>
               <Button
-                  type="submit"
+                  type="button"
                   variant="contained"
                   color="primary"
                   fullWidth
