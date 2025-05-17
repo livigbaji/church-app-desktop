@@ -16,11 +16,14 @@ import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomi
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import AssignmentIndSharpIcon from "@mui/icons-material/AssignmentIndSharp";
+import CakeOutlined from "@mui/icons-material/CakeOutlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CreateUnits from "@/components/forms/CreateUnits";
+import { GraphicEqSharp } from "@mui/icons-material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { Note } from "@mui/icons-material";
 
 const drawerWidth = 269;
 
@@ -30,6 +33,9 @@ const navigationItems = [
   { text: "Members", icon: <GroupOutlinedIcon />, path: "/members" },
   { text: "Sub-Units", icon: <GroupAddOutlinedIcon />, path: "/subunits" },
   { text: "Profiles", icon: <AssignmentIndSharpIcon />, path: "/profiles" },
+  { text: "Birthdays", icon: <CakeOutlined />, path: "/birthdays" },
+  { text: "Reports", icon: <GraphicEqSharp />, path: "/reports" },
+  { text: "Journal", icon: <Note />, path: "/Journal" },
 ];
 
 const subUnitItems = [

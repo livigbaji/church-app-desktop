@@ -10,17 +10,21 @@ import Profiles from "./components/Profiles";
 import Birthdays from "./components/Birthdays";
 import CreateMember from "./components/forms/CreateMember";
 import CreateUnits from "@/components/forms/CreateUnits";
+import Reports from "./components/Reports";
+import Journal from "./components/Journal";
 
 const App: React.FC = () => {
   const routes = [
     { path: "/", element: <Dashboard /> },
     { path: "/attendance", element: <Attendance /> },
     { path: "/members", element: <Members /> },
-    { path: "/members/birthdays", element: <Birthdays /> },
+    { path: "/birthdays", element: <Birthdays /> },
     { path: "/members/newmember", element: <CreateMember /> },
     { path: "/subunits", element: <SubUnit /> },
     { path: "/subunits/add-unit", element: <CreateUnits /> },
     { path: "/profiles", element: <Profiles /> },
+    { path: "/reports", element: <Reports /> },
+    { path: "/Journal", element: <Journal /> },
   ];
 
   return (
