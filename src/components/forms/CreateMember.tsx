@@ -65,7 +65,7 @@ const CreateMember: React.FC = () => {
 
   const [tabIndex, setTabIndex] = useState(1);
 
-  const handleTabChange= (_e: any, value: number) => {
+  const handleTabChange= (_e:  React.SyntheticEvent, value: number) => {
       setTabIndex(value);
   }
 
